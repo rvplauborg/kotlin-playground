@@ -80,8 +80,3 @@ dependencies {
     val junitVersion: String by project
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
-
-tasks.test {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}
