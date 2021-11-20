@@ -4,6 +4,7 @@
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     id("org.jmailen.kotlinter")
 }
 
@@ -63,6 +64,8 @@ tasks {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // use same version of kotlin library versions
     implementation(kotlin("stdlib"))
+    val kotlinxSerializationVersion: String by project
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
     val valiktorVersion: String by project
     implementation("org.valiktor:valiktor-core:$valiktorVersion")
 
@@ -70,9 +73,12 @@ dependencies {
     val kluentVersion: String by project
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("org.valiktor:valiktor-test:$valiktorVersion")
-    testImplementation("com.appmattus.fixture:fixture:1.2.0")
-    testImplementation("io.mockk:mockk:1.12.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
+    val fixtureVersion: String by project
+    testImplementation("com.appmattus.fixture:fixture:$fixtureVersion")
+    val mockkVersion: String by project
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    val junitVersion: String by project
+    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
 }
 
 tasks.test {
