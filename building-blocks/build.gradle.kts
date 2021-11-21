@@ -4,7 +4,8 @@ plugins {
 }
 
 dependencies {
-    api("com.trendyol:kediatr-core:1.0.17")
+    val kediatrVersion: String by project
+    api("com.trendyol:kediatr-core:$kediatrVersion")
     val fixtureVersion: String by project
     testFixturesImplementation("com.appmattus.fixture:fixture:$fixtureVersion")
 }
