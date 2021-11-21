@@ -13,9 +13,7 @@ dependencyResolutionManagement {
     }
 }
 
-include("app")
-include("user-access")
-include("building-blocks")
 // We might have to ensure we do not have projects that are named the same, i.e. :something:application and :otherthing:application
 // as Gradle will fail. See https://github.com/gradle/gradle/issues/847 for more information.
-include("poker")
+include("building-blocks")
+include("poker-app")

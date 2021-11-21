@@ -1,3 +1,5 @@
+group = "dk.mailr"
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -54,7 +56,7 @@ tasks {
     }
     compileKotlin {
         kotlinOptions.allWarningsAsErrors = true
-//        kotlinOptions.jvmTarget = JavaLanguageVersion.of(11).toString()
+        kotlinOptions.jvmTarget = JavaLanguageVersion.of(15).toString()
     }
     koverCollectReports {
         outputDir.set(rootProject.layout.buildDirectory.dir("my-reports") )

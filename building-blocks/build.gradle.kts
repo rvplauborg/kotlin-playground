@@ -1,5 +1,5 @@
 plugins {
-    id("kotlin.vertical.test.kotlin-common-conventions")
+    id("vertical.template.kotlin-common-conventions")
     `java-test-fixtures`
 }
 
