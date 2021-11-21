@@ -5,7 +5,8 @@
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
-    id("org.jmailen.kotlinter")
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.kotlinx.kover")
 }
 
 repositories {
@@ -61,6 +62,11 @@ tasks {
     }
 }
 
+detekt {
+    config = files("${rootProject.rootDir.path}/detekt.yml")
+    buildUponDefaultConfig = true
+}
+
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // use same version of kotlin library versions
     implementation(kotlin("stdlib"))
@@ -79,4 +85,7 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     val junitVersion: String by project
     testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+
+    val detektVersion: String by project
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion") // ktlint wrapper for detekt
 }
