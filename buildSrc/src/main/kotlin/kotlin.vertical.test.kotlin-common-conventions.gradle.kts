@@ -27,7 +27,7 @@ configurations {
     }
 }
 
-val integrationTest by sourceSets.creating {
+val integrationTest: SourceSet by sourceSets.creating {
     compileClasspath += sourceSets.main.get().output
     runtimeClasspath += sourceSets.main.get().output
 }
@@ -60,10 +60,13 @@ tasks {
         kotlinOptions.allWarningsAsErrors = true
 //        kotlinOptions.jvmTarget = JavaLanguageVersion.of(11).toString()
     }
+    koverCollectReports {
+        outputDir.set(rootProject.layout.buildDirectory.dir("my-reports") )
+    }
 }
 
 detekt {
-    config = files("${rootProject.rootDir.path}/detekt.yml")
+    config = files(rootProject.layout.projectDirectory.file("detekt.yml"))
     buildUponDefaultConfig = true
 }
 
