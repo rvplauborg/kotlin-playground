@@ -7,7 +7,7 @@
  * in the user manual at https://docs.gradle.org/7.2/userguide/multi_project_builds.html
  */
 
-rootProject.name = "kotlin-vertical-template"
+rootProject.name = "vertical-template"
 
 dependencyResolutionManagement {
     // Default repository setup that individual projects can override if needed
@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 }
 
 include("app")
-include("useraccess")
+include("user-access")
 include("building-blocks")
 
 
