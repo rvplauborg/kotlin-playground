@@ -6,6 +6,5 @@ dependencies {
 }
 
 application {
-    // Define the main class for the application.
-    mainClass.set("kotlin.vertical.test.app.AppKt")
+    mainClass.set("vertical.template.AppKt")
 }
