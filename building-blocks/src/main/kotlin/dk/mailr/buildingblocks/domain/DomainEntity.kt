@@ -1,9 +1,13 @@
 package dk.mailr.buildingblocks.domain
 
 import dk.mailr.buildingblocks.mediator.DomainEvent
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-abstract class DomainEntity<T : DomainEntity<T, TId>, TId : EntityId> {
-    abstract val id: TId
+@Serializable
+abstract class DomainEntity<T : DomainEntity<T>> {
+    @SerialName("_id")
+    abstract val id: EntityId<T>
 
     private val _domainEvents = mutableListOf<DomainEvent>()
 

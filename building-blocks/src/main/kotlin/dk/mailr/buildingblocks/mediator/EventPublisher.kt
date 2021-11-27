@@ -4,7 +4,7 @@ import dk.mailr.buildingblocks.domain.DomainEntity
 import java.util.concurrent.LinkedBlockingQueue
 
 interface EventPublisher {
-    fun enqueueEventsFrom(entity: DomainEntity<*, *>)
+    fun enqueueEventsFrom(entity: DomainEntity<*>)
     fun publishAll()
 }
 
@@ -13,7 +13,7 @@ class DomainEventPublisher(
 ) : EventPublisher {
     private val pendingEvents = LinkedBlockingQueue<DomainEvent>()
 
-    override fun enqueueEventsFrom(entity: DomainEntity<*, *>) {
+    override fun enqueueEventsFrom(entity: DomainEntity<*>) {
         val domainEvents = entity.domainEvents
         entity.clearDomainEvents()
         domainEvents.forEach {
