@@ -5,6 +5,8 @@
 
 rootProject.name = "vertical-template"
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 dependencyResolutionManagement {
     // Default repository setup that individual projects can override if needed
     @Suppress("UnstableApiUsage")
@@ -16,4 +18,7 @@ dependencyResolutionManagement {
 // We might have to ensure we do not have projects that are named the same, i.e. :something:application and :otherthing:application
 // as Gradle will fail. See https://github.com/gradle/gradle/issues/847 for more information.
 include("building-blocks")
-include("poker-app")
+include("web-app")
+include("poker:poker-application")
+include("poker:poker-infrastructure")
+include("poker:poker-domain")

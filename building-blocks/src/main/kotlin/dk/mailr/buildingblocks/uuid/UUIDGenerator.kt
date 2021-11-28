@@ -6,6 +6,6 @@ fun interface UUIDGenerator {
     fun generate(): UUID
 }
 
-internal class RandomUUIDGenerator : UUIDGenerator {
+class RandomUUIDGenerator : UUIDGenerator {
     override fun generate(): UUID = UUID.randomUUID()
 }

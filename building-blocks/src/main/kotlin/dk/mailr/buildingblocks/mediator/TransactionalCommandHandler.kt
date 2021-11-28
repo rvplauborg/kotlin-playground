@@ -1,13 +1,13 @@
 package dk.mailr.buildingblocks.mediator
 
+import com.trendyol.kediatr.AsyncCommandHandler
 import com.trendyol.kediatr.Command
-import com.trendyol.kediatr.CommandHandler
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 
 abstract class TransactionalCommandHandler<TCommand : Command>(
     private val unitOfWork: UnitOfWork,
-) : CommandHandler<TCommand> {
-    final override fun handle(command: TCommand) {
+) : AsyncCommandHandler<TCommand> {
+    final override suspend fun handleAsync(command: TCommand) {
         unitOfWork.use {
             it.start()
             handleInTransaction(command)
@@ -15,5 +15,5 @@ abstract class TransactionalCommandHandler<TCommand : Command>(
         }
     }
 
-    protected abstract fun handleInTransaction(command: TCommand)
+    protected abstract suspend fun handleInTransaction(command: TCommand)
 }

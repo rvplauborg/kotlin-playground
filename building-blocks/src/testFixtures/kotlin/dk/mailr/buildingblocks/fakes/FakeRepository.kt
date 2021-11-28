@@ -5,7 +5,7 @@ import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.DomainEvent
 
-open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TEntity, EntityId<TEntity>> {
+open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TEntity> {
     val entities = mutableMapOf<EntityId<TEntity>, TEntity>()
     val publishedEvents = mutableListOf<DomainEvent>()
 

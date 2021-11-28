@@ -11,12 +11,12 @@ import org.litote.kmongo.findOneById
 import org.litote.kmongo.`in`
 import org.litote.kmongo.save
 
-interface EntityRepository<TEntity : DomainEntity<TEntity>, TEntityId : EntityId<TEntity>> {
-    fun findById(id: TEntityId): TEntity?
+interface EntityRepository<TEntity : DomainEntity<TEntity>> {
+    fun findById(id: EntityId<TEntity>): TEntity?
 
-    fun findByIds(ids: List<TEntityId>): List<TEntity>
+    fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity>
 
-    fun getById(id: TEntityId): TEntity
+    fun getById(id: EntityId<TEntity>): TEntity
 
     fun <S : TEntity> save(entity: S): S
 
@@ -24,26 +24,26 @@ interface EntityRepository<TEntity : DomainEntity<TEntity>, TEntityId : EntityId
 
     fun delete(entity: TEntity)
 
-    fun deleteById(id: TEntityId)
+    fun deleteById(id: EntityId<TEntity>)
 
     fun saveChanges()
 }
 
-abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>, TEntityId : EntityId<TEntity>>(
+abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
     private val eventsPublisher: EventPublisher,
     private val clientSession: ClientSession,
-) : EntityRepository<TEntity, TEntityId> {
+) : EntityRepository<TEntity> {
     abstract val mongoCollection: MongoCollection<TEntity>
 
-    override fun findById(id: TEntityId): TEntity? {
+    override fun findById(id: EntityId<TEntity>): TEntity? {
         return mongoCollection.findOneById(clientSession, id)
     }
 
-    override fun getById(id: TEntityId): TEntity {
+    override fun getById(id: EntityId<TEntity>): TEntity {
         return mongoCollection.findOneById(clientSession, id) ?: throw NotFoundException("Entity $id does not exist")
     }
 
-    override fun findByIds(ids: List<TEntityId>): List<TEntity> {
+    override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
         return mongoCollection.find(clientSession, DomainEntity<TEntity>::id `in` ids).toList()
     }
 
@@ -63,7 +63,7 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>, TEntityId 
         eventsPublisher.enqueueEventsFrom(entity)
     }
 
-    override fun deleteById(id: TEntityId) {
+    override fun deleteById(id: EntityId<TEntity>) {
         mongoCollection.deleteOneById(clientSession, id)
     }
 

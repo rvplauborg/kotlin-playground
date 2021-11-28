@@ -12,11 +12,13 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":building-blocks"))
+    implementation(projects.buildingBlocks)
+    implementation(projects.poker.pokerApplication)
+    implementation(projects.poker.pokerInfrastructure)
     val ktorVersion: String by project
     implementation("io.ktor:ktor-serialization:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    val koinVersion = "3.1.3"
+    val koinVersion: String by project
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
 

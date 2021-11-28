@@ -3,11 +3,11 @@ package dk.mailr.buildingblocks.mediator
 import com.trendyol.kediatr.DependencyProvider
 
 @Suppress("UNCHECKED_CAST")
-class ManuelDependencyProvider(
-    private val handlerMap: HashMap<Class<*>, Any>,
+class ManualDependencyProvider(
+    private val handlerMap: HashMap<Class<*>, Lazy<Any>>,
 ) : DependencyProvider {
     override fun <T> getSingleInstanceOf(clazz: Class<T>): T {
-        return handlerMap[clazz] as T
+        return (handlerMap[clazz] as Lazy<T>).value
     }
 
     override fun <T> getSubTypesOf(clazz: Class<T>): Collection<Class<T>> {
