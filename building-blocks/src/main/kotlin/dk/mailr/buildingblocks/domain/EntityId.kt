@@ -3,13 +3,12 @@ package dk.mailr.buildingblocks.domain
 import dk.mailr.buildingblocks.uuid.emptyUUID
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import org.litote.kmongo.Id
 import org.valiktor.functions.isNotEqualTo
 import org.valiktor.validate
 import java.util.UUID
 
 @Serializable
-open class EntityId<T : DomainEntity<T>>(val value: @Contextual UUID) : Id<T> {
+open class EntityId<T : DomainEntity<T>>(val value: @Contextual UUID) {
     init {
         validateId()
     }

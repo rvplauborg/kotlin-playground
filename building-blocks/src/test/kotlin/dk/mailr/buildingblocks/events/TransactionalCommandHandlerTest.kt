@@ -5,6 +5,7 @@ import dk.mailr.buildingblocks.fakes.FakeUnitOfWork
 import dk.mailr.buildingblocks.mediator.TransactionalCommandHandler
 import io.mockk.spyk
 import io.mockk.verifyOrder
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
 internal class TransactionalCommandHandlerTest {
@@ -15,14 +16,14 @@ internal class TransactionalCommandHandlerTest {
     private val transactionalCommandHandler: TransactionalCommandHandler<TestCommand> =
         object : TransactionalCommandHandler<TestCommand>(fakeUnitOfWork) {
 
-            override fun handleInTransaction(command: TestCommand) {
+            override suspend fun handleInTransaction(command: TestCommand) {
                 fakeUnitOfWork.toString()
             }
         }
 
     @Test
-    fun `should first start transaction, then call handler logic, then finally commit`() {
-        transactionalCommandHandler.handle(TestCommand())
+    fun `should first start transaction, then call handler logic, then finally commit`() = runBlocking {
+        transactionalCommandHandler.handleAsync(TestCommand())
 
         verifyOrder {
             fakeUnitOfWork.start()

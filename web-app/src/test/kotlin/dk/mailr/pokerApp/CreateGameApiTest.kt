@@ -1,4 +1,4 @@
-package dk.mailr.pokerApp.game
+package dk.mailr.pokerApp
 
 import dk.mailr.pokerApp.module
 import io.ktor.http.HttpMethod
@@ -10,7 +10,7 @@ import org.amshove.kluent.shouldNotBeNull
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-class CreateGameKtTest {
+class CreateGameApiTest {
     @Test
     fun testPostGameCreate() {
         withTestApplication({ module() }) {
