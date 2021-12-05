@@ -26,7 +26,7 @@ interface EntityRepository<TEntity : DomainEntity<TEntity>> {
 
     fun deleteById(id: EntityId<TEntity>)
 
-    fun saveChanges()
+    suspend fun saveChanges()
 }
 
 abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
@@ -67,7 +67,7 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
         mongoCollection.deleteOneById(clientSession, id)
     }
 
-    override fun saveChanges() {
+    override suspend fun saveChanges() {
         eventsPublisher.publishAll()
     }
 }

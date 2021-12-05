@@ -29,14 +29,14 @@ internal class DomainEventPublisherTest {
     }
 
     @Test
-    fun `publish should not publish anything when nothing is queued`() {
+    suspend fun `publish should not publish anything when nothing is queued`() {
         entityEventsPublisher.publishAll()
 
         fakeCommandBus.notifications.shouldBeEmpty()
     }
 
     @Test
-    fun `should publish queued events to bus on publish`() {
+    suspend fun `should publish queued events to bus on publish`() {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 
@@ -46,7 +46,7 @@ internal class DomainEventPublisherTest {
     }
 
     @Test
-    fun `should clear queued events on publish so they are not published again`() {
+    suspend fun `should clear queued events on publish so they are not published again`() {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 

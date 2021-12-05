@@ -5,7 +5,7 @@ import java.util.concurrent.LinkedBlockingQueue
 
 interface EventPublisher {
     fun enqueueEventsFrom(entity: DomainEntity<*>)
-    fun publishAll()
+    suspend fun publishAll()
 }
 
 class DomainEventPublisher(
@@ -21,11 +21,11 @@ class DomainEventPublisher(
         }
     }
 
-    override fun publishAll() {
+    override suspend fun publishAll() {
         val eventsToPublish = pendingEvents.toList()
         pendingEvents.clear()
         eventsToPublish.forEach {
-            mediator.publishNotification(it)
+            mediator.publishNotificationAsync(it)
         }
     }
 }
