@@ -9,6 +9,8 @@ dependencies {
     api("org.litote.kmongo:kmongo-serialization:4.4.0")
     val logbackVersion: String by project
     api("ch.qos.logback:logback-classic:$logbackVersion")
+    val koinVersion: String by project
+    api("io.insert-koin:koin-core:$koinVersion")
 
     val testContainersVersion: String by project
     testFixturesImplementation("org.testcontainers:mongodb:$testContainersVersion")

@@ -2,8 +2,8 @@ package dk.mailr.pokerApp
 
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
-import dk.mailr.pokerApp.di.coreModule
-import dk.mailr.pokerApp.di.gameModule
+import dk.mailr.buildingblocks.di.coreModule
+import dk.mailr.pokerInfrastructure.di.pokerModule
 import dk.mailr.pokerApp.di.mediatorModule
 import dk.mailr.pokerApplication.createGameRoute
 import io.ktor.application.Application
@@ -26,7 +26,7 @@ fun Application.module() {
         slf4jLogger(Level.ERROR) // Must be ERROR until https://github.com/InsertKoinIO/koin/issues/1188 is fixed
         modules(
             coreModule,
-            gameModule,
+            pokerModule,
             mediatorModule,
         )
     }

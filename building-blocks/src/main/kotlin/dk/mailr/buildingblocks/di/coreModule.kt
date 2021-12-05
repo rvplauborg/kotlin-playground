@@ -1,4 +1,4 @@
-package dk.mailr.pokerApp.di
+package dk.mailr.buildingblocks.di
 
 import com.mongodb.client.ClientSession
 import com.mongodb.client.MongoClient
@@ -8,7 +8,6 @@ import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 import dk.mailr.buildingblocks.json.UUIDSerializer
 import dk.mailr.buildingblocks.uuid.RandomUUIDGenerator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
-import io.ktor.serialization.DefaultJson
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
@@ -22,7 +21,7 @@ val coreModule = module {
     single<MongoDatabase> { get<MongoClient>().getDatabase("vertical-template-db") }
     single<UUIDGenerator> { RandomUUIDGenerator() }
     single {
-        Json(DefaultJson) {
+        Json(Json.Default) {
             serializersModule = SerializersModule { contextual(UUIDSerializer) }
         }
     }
