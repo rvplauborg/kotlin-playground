@@ -15,7 +15,7 @@ import org.koin.dsl.module
 import org.litote.kmongo.KMongo
 
 val coreModule = module {
-    single { KMongo.createClient("mongodb://mongo1:30001,mongo2:30002,mongo3:30003/test") }
+    single { KMongo.createClient("mongodb://mongo1:30001/test") }
     single<ClientSession> { get<MongoClient>().startSession() }
     single<UnitOfWork> { MongoUnitOfWork(get()) }
     single<MongoDatabase> { get<MongoClient>().getDatabase("vertical-template-db") }
