@@ -1,19 +1,18 @@
 package dk.mailr.pokerApp
 
+import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
-import dk.mailr.buildingblocks.di.coreModule
-import dk.mailr.pokerInfrastructure.di.pokerModule
 import dk.mailr.pokerApp.di.mediatorModule
 import dk.mailr.pokerApplication.createGameRoute
+import dk.mailr.pokerInfrastructure.di.pokerModule
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
+import io.ktor.jackson.jackson
 import io.ktor.routing.routing
-import io.ktor.serialization.json
 import org.koin.core.logger.Level
-import org.koin.ktor.ext.get
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
@@ -30,7 +29,7 @@ fun Application.module() {
             mediatorModule,
         )
     }
-    install(ContentNegotiation) { json(get()) }
+    install(ContentNegotiation) { jackson() }
 
     routing {
         val mediator by inject<Mediator>()

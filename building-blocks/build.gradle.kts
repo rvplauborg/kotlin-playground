@@ -6,7 +6,7 @@ plugins {
 dependencies {
     val kediatrVersion: String by project
     api("com.trendyol:kediatr-core:$kediatrVersion")
-    api("org.litote.kmongo:kmongo-serialization:4.4.0")
+    api("org.litote.kmongo:kmongo:4.4.0")
     val logbackVersion: String by project
     api("ch.qos.logback:logback-classic:$logbackVersion")
     val koinVersion: String by project

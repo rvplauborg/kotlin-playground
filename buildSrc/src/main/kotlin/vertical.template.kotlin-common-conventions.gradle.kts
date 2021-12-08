@@ -2,7 +2,6 @@ group = "dk.mailr"
 
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization")
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlinx.kover")
 }
@@ -15,7 +14,7 @@ repositories {
 kotlin {
     jvmToolchain {
         // See https://kotlinlang.org/docs/whatsnew1530.html#support-for-java-toolchains
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(17))
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of("17"))
     }
 }
 
@@ -56,10 +55,10 @@ tasks {
     }
     compileKotlin {
         kotlinOptions.allWarningsAsErrors = true
-        kotlinOptions.jvmTarget = JavaLanguageVersion.of(15).toString()
+        kotlinOptions.jvmTarget = JavaLanguageVersion.of("15").toString()
     }
     koverCollectReports {
-        outputDir.set(rootProject.layout.buildDirectory.dir("my-reports") )
+        outputDir.set(rootProject.layout.buildDirectory.dir("my-reports"))
     }
 }
 
@@ -71,8 +70,6 @@ detekt {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // use same version of kotlin library versions
     implementation(kotlin("stdlib"))
-    val kotlinxSerializationVersion: String by project
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
     val valiktorVersion: String by project
     implementation("org.valiktor:valiktor-core:$valiktorVersion")
 

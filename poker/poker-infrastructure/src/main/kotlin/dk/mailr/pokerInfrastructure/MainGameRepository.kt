@@ -1,7 +1,6 @@
 package dk.mailr.pokerInfrastructure
 
 import com.mongodb.client.ClientSession
-import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import dk.mailr.buildingblocks.dataAccess.MongoEntityRepository
 import dk.mailr.buildingblocks.mediator.EventPublisher
@@ -14,5 +13,5 @@ class MainGameRepository(
     clientSession: ClientSession,
     mongoDatabase: MongoDatabase,
 ) : GameRepository, MongoEntityRepository<TexasHoldEmGame>(eventPublisher, clientSession) {
-    override val mongoCollection: MongoCollection<TexasHoldEmGame> = mongoDatabase.getCollection()
+    override val mongoCollection = mongoDatabase.getCollection<TexasHoldEmGame>()
 }

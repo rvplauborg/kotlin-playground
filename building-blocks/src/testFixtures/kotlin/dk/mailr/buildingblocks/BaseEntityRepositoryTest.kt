@@ -13,7 +13,8 @@ abstract class BaseEntityRepositoryTest {
         val mongoDBContainer: MongoDBContainer = MongoDBContainer("mongo:5.0.4")
     }
 
-    protected val mongoDatabase = KMongo.createClient("${mongoDBContainer.replicaSetUrl}?uuidRepresentation=STANDARD").getDatabase("test")
+    protected val mongoClient = KMongo.createClient("${mongoDBContainer.replicaSetUrl}?uuidRepresentation=STANDARD")
+    protected val mongoDatabase = mongoClient.getDatabase("test")
 
     @BeforeEach
     fun clearDb() {

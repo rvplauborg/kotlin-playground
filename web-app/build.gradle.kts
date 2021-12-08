@@ -4,7 +4,7 @@ plugins {
 
 version = "0.0.1"
 application {
-    mainClass.set("dk.mailr.pokerApp.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 repositories {
@@ -16,7 +16,7 @@ dependencies {
     implementation(projects.poker.pokerApplication)
     implementation(projects.poker.pokerInfrastructure)
     val ktorVersion: String by project
-    implementation("io.ktor:ktor-serialization:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     val koinVersion: String by project
     implementation("io.insert-koin:koin-ktor:$koinVersion")

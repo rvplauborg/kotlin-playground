@@ -1,6 +1,5 @@
 package dk.mailr.pokerApp
 
-import dk.mailr.pokerApp.module
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
