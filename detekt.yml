@@ -748,7 +748,7 @@ style:
     active: false
     acceptableLength: 4
   UnnecessaryAbstractClass:
-    active: true
+    active: false
   UnnecessaryAnnotationUseSiteTarget:
     active: false
   UnnecessaryApply:
