@@ -12,6 +12,7 @@ import io.ktor.application.log
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.jackson.jackson
+import io.ktor.locations.Locations
 import io.ktor.routing.routing
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.inject
@@ -20,7 +21,7 @@ import org.koin.logger.slf4jLogger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.module(dbConnectionString: String = "mongodb://mongo1:30001") {
+fun Application.module(dbConnectionString: String = environment.config.property("mongodb.uri").getString()) {
     install(CallLogging)
     koin {
         slf4jLogger(Level.ERROR) // Must be ERROR until https://github.com/InsertKoinIO/koin/issues/1188 is fixed
@@ -30,7 +31,6 @@ fun Application.module(dbConnectionString: String = "mongodb://mongo1:30001") {
             pokerModule,
         )
     }
-    install(ContentNegotiation) { jackson() }
 
     routing {
         val mediator by inject<Mediator>()
@@ -41,4 +41,6 @@ fun Application.module(dbConnectionString: String = "mongodb://mongo1:30001") {
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()
     log.info("Running on port {} with environment {}", port, env)
+
+    log.info("MongoDB URI $dbConnectionString")
 }
