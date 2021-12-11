@@ -9,10 +9,10 @@ import org.amshove.kluent.shouldNotBeNull
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-class CreateGameApiTest {
+class CreateGameApiTest : BaseApiTest() {
     @Test
     fun `should be possible to create game`() {
-        withTestApplication({ module() }) {
+        withTestApplication({ module(DB_CONTAINER.replicaSetUrl) }) {
             handleRequest(HttpMethod.Post, "/game/create-game").apply {
                 response.status() shouldBeEqualTo HttpStatusCode.OK
                 val actual = response.content

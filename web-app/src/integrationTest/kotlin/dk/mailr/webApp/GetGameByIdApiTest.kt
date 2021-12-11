@@ -10,15 +10,14 @@ import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldBeEqualTo
 import org.amshove.kluent.shouldNotBeNull
 import org.koin.core.component.inject
-import org.koin.test.KoinTest
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
-class GetGameByIdApiTest : KoinTest {
+class GetGameByIdApiTest : BaseApiTest() {
     @Test
     fun `should be possible to retrieve game by id`() {
-        withTestApplication({ module() }) {
+        withTestApplication({ module(DB_CONTAINER.replicaSetUrl) }) {
             val gameId = UUID.randomUUID()
             runBlocking {
                 val mediator by inject<Mediator>()

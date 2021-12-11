@@ -27,4 +27,5 @@ dependencies {
     }
 
     integrationTestImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    integrationTestImplementation("org.testcontainers:mongodb:1.16.2")
 }

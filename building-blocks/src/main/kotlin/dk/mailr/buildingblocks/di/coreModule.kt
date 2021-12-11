@@ -13,12 +13,12 @@ import org.bson.UuidRepresentation
 import org.koin.dsl.module
 import org.litote.kmongo.KMongo
 
-val coreModule = module {
+fun coreModule(dbConnectionString: String) = module {
     single<MongoClient> {
         KMongo.createClient(
             MongoClientSettings.builder()
                 .uuidRepresentation(UuidRepresentation.STANDARD)
-                .applyConnectionString(ConnectionString("mongodb://mongo1:30001"))
+                .applyConnectionString(ConnectionString(dbConnectionString))
                 .build()
         )
     }
