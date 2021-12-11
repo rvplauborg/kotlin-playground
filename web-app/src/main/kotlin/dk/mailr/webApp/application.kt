@@ -8,6 +8,7 @@ import dk.mailr.pokerInfrastructure.di.pokerModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
 import io.ktor.application.install
+import io.ktor.application.log
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.jackson.jackson
@@ -36,4 +37,8 @@ fun Application.module(dbConnectionString: String = "mongodb://mongo1:30001") {
         val uuidGenerator by inject<UUIDGenerator>()
         pokerRouting(mediator, uuidGenerator)
     }
+
+    val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
+    val env = environment.config.propertyOrNull("ktor.environment")?.getString()
+    log.info("Running on port {} with environment {}", port, env)
 }
