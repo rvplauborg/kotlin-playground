@@ -1,4 +1,4 @@
-package dk.mailr.pokerApp.di
+package dk.mailr.webApp.di
 
 import com.trendyol.kediatr.CommandBusBuilder
 import dk.mailr.buildingblocks.mediator.DomainEventPublisher

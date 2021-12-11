@@ -1,11 +1,10 @@
-package dk.mailr.pokerApp
+package dk.mailr.webApp
 
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
-import dk.mailr.pokerApp.di.mediatorModule
-import dk.mailr.pokerApplication.createGameRoute
-import dk.mailr.pokerApplication.getGameByIdRoute
+import dk.mailr.webApp.di.mediatorModule
+import dk.mailr.pokerApplication.pokerRouting
 import dk.mailr.pokerInfrastructure.di.pokerModule
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -26,8 +25,8 @@ fun Application.module() {
         slf4jLogger(Level.ERROR) // Must be ERROR until https://github.com/InsertKoinIO/koin/issues/1188 is fixed
         modules(
             coreModule,
-            pokerModule,
             mediatorModule,
+            pokerModule,
         )
     }
     install(ContentNegotiation) { jackson() }
@@ -35,7 +34,6 @@ fun Application.module() {
     routing {
         val mediator by inject<Mediator>()
         val uuidGenerator by inject<UUIDGenerator>()
-        createGameRoute(mediator, uuidGenerator)
-        getGameByIdRoute(mediator)
+        pokerRouting(mediator, uuidGenerator)
     }
 }

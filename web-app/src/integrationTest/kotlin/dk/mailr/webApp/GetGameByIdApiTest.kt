@@ -1,4 +1,4 @@
-package dk.mailr.pokerApp
+package dk.mailr.webApp
 
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.pokerApplication.CreateGameCommand

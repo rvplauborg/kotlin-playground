@@ -1,4 +1,4 @@
-package dk.mailr.pokerApp
+package dk.mailr.webApp
 
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
