@@ -5,6 +5,7 @@ import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.pokerApp.di.mediatorModule
 import dk.mailr.pokerApplication.createGameRoute
+import dk.mailr.pokerApplication.getGameByIdRoute
 import dk.mailr.pokerInfrastructure.di.pokerModule
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -35,5 +36,6 @@ fun Application.module() {
         val mediator by inject<Mediator>()
         val uuidGenerator by inject<UUIDGenerator>()
         createGameRoute(mediator, uuidGenerator)
+        getGameByIdRoute(mediator)
     }
 }

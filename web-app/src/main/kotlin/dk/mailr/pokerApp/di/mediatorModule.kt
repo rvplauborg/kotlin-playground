@@ -7,6 +7,7 @@ import dk.mailr.buildingblocks.mediator.MainMediator
 import dk.mailr.buildingblocks.mediator.ManualDependencyProvider
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.pokerApplication.CreateGameCommandHandler
+import dk.mailr.pokerApplication.GetGameByIdQueryHandler
 import org.koin.dsl.module
 
 val mediatorModule = module {
@@ -15,6 +16,7 @@ val mediatorModule = module {
             ManualDependencyProvider(
                 hashMapOf(
                     CreateGameCommandHandler::class.java to inject<CreateGameCommandHandler>(),
+                    GetGameByIdQueryHandler::class.java to inject<GetGameByIdQueryHandler>(),
                 )
             )
         ).build()

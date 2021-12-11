@@ -1,6 +1,9 @@
 package dk.mailr.buildingblocks
 
-import org.junit.jupiter.api.BeforeEach
+import com.mongodb.ConnectionString
+import com.mongodb.MongoClientSettings
+import org.bson.UuidRepresentation
+import org.junit.jupiter.api.AfterEach
 import org.litote.kmongo.KMongo
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.junit.jupiter.Container
@@ -10,13 +13,19 @@ import org.testcontainers.junit.jupiter.Testcontainers
 abstract class BaseEntityRepositoryTest {
     companion object {
         @Container
-        val mongoDBContainer: MongoDBContainer = MongoDBContainer("mongo:5.0.4")
+        val mongoDBContainer: MongoDBContainer = MongoDBContainer("mongo:4.4.8")
     }
 
-    protected val mongoClient = KMongo.createClient("${mongoDBContainer.replicaSetUrl}?uuidRepresentation=STANDARD")
+    protected val mongoClient = KMongo.createClient(
+        MongoClientSettings.builder()
+            .uuidRepresentation(UuidRepresentation.STANDARD)
+            .applyConnectionString(ConnectionString(mongoDBContainer.replicaSetUrl))
+            .build()
+    )
+
     protected val mongoDatabase = mongoClient.getDatabase("test")
 
-    @BeforeEach
+    @AfterEach
     fun clearDb() {
         mongoDatabase.drop()
     }

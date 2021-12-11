@@ -11,7 +11,7 @@ import kotlin.test.assertNotNull
 
 class CreateGameApiTest {
     @Test
-    fun testPostGameCreate() {
+    fun `should be possible to create game`() {
         withTestApplication({ module() }) {
             handleRequest(HttpMethod.Post, "/game/create-game").apply {
                 response.status() shouldBeEqualTo HttpStatusCode.OK

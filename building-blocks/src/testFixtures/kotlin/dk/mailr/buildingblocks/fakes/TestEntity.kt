@@ -2,8 +2,11 @@ package dk.mailr.buildingblocks.fakes
 
 import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
-import java.util.UUID
+import dk.mailr.buildingblocks.mediator.DomainEvent
 
-class TestEntity(override val id: TestEntityId) : DomainEntity<TestEntity>()
+data class TestEntity(override val id: EntityId<TestEntity>) : DomainEntity<TestEntity>() {
+    var name: String = ""
 
-class TestEntityId(value: UUID) : EntityId<TestEntity>(value)
+    fun withName(name: String) = this.also { this.name = name }
+    fun withEvent() = this.also { addDomainEvent(object : DomainEvent() {}) }
+}

@@ -32,7 +32,7 @@ data class CreateGameCommand private constructor(internal val gameId: EntityId<T
 class CreateGameCommandHandler(private val gameRepository: GameRepository, unitOfWork: UnitOfWork) :
     TransactionalCommandHandler<CreateGameCommand>(unitOfWork), AsyncCommandHandler<CreateGameCommand> {
     override suspend fun handleInTransaction(command: CreateGameCommand) {
-        gameRepository.save(TexasHoldEmGame.create(EntityId(UUID.randomUUID())))
+        gameRepository.save(TexasHoldEmGame.create(command.gameId))
         gameRepository.saveChanges()
     }
 }

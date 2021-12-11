@@ -5,6 +5,7 @@ import dk.mailr.buildingblocks.fakes.TestEntity
 import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.buildingblocks.mediator.DomainEvent
 import dk.mailr.buildingblocks.mediator.DomainEventPublisher
+import kotlinx.coroutines.runBlocking
 import org.amshove.kluent.shouldBeEmpty
 import org.amshove.kluent.shouldContain
 import org.amshove.kluent.shouldHaveSize
@@ -31,14 +32,14 @@ internal class EntityDomainEventsPublisherTest {
     }
 
     @Test
-    suspend fun `publish should not publish anything when nothing is queued`() {
+    fun `publish should not publish anything when nothing is queued`() = runBlocking<Unit> {
         entityEventsPublisher.publishAll()
 
         fakeCommandBus.notifications.shouldBeEmpty()
     }
 
     @Test
-    suspend fun `should publish queued events to bus on publish`() {
+    fun `should publish queued events to bus on publish`() = runBlocking<Unit> {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 
@@ -48,7 +49,7 @@ internal class EntityDomainEventsPublisherTest {
     }
 
     @Test
-    suspend fun `should clear queued events on publish so they are not published again`() {
+    fun `should clear queued events on publish so they are not published again`() = runBlocking<Unit> {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 

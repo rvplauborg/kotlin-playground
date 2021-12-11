@@ -26,4 +26,6 @@ dependencies {
         exclude("org.jetbrains.kotlin", "kotlin-test-junit")
     }
     testImplementation("io.ktor:ktor-server-tests:$ktorVersion")
+    val kotlinVersion: String by project
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
 }

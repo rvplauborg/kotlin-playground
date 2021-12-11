@@ -15,12 +15,10 @@ class CreateGameCommandHandlerTest {
     private val handler = CreateGameCommandHandler(fakeGameRepository, FakeUnitOfWork())
 
     @Test
-    fun `should create game`() {
-        runBlocking {
-            handler.handleAsync(CreateGameCommand.of(fixture()))
+    fun `should create game`() = runBlocking<Unit> {
+        handler.handleAsync(CreateGameCommand.of(fixture()))
 
-            verify { fakeGameRepository.save(any()) }
-            fakeGameRepository.publishedEvents.shouldContainAny { it is GameCreatedEvent }
-        }
+        verify { fakeGameRepository.save(any()) }
+        fakeGameRepository.publishedEvents.shouldContainAny { it is GameCreatedEvent }
     }
 }
