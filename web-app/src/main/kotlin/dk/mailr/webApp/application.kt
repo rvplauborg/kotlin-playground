@@ -10,20 +10,49 @@ import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.application.log
+import io.ktor.features.CallId
 import io.ktor.features.CallLogging
+import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
+import io.ktor.features.callId
+import io.ktor.features.callIdMdc
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.jackson.jackson
+import io.ktor.request.header
+import io.ktor.request.httpMethod
+import io.ktor.request.uri
 import io.ktor.response.respond
 import io.ktor.routing.routing
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
+import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(dbConnectionString: String = environment.config.property("mongodb.uri").getString()) {
-    install(CallLogging)
+    install(CallId) {
+        // Tries to retrieve a callId from an ApplicationCall. You can add several retrievers and all will be executed coalescing until one of them is not null.
+        retrieve { it.request.header(HttpHeaders.XRequestId) }
+
+        // If can't retrieve a callId from the ApplicationCall, it will try the generate blocks coalescing until one of them is not null.
+        val counter = AtomicInteger(0)
+        generate { "generated-call-id-${counter.getAndIncrement()}" }
+
+        // Once a callId is generated, this optional function is called to verify if the retrieved or generated callId String is valid.
+        verify { it.isNotEmpty() }
+    }
+    install(CallLogging) {
+        callIdMdc()
+        format { call ->
+            val status = call.response.status()
+            val httpMethod = call.request.httpMethod.value
+            val userAgent = call.request.headers["User-Agent"]
+            "${call.request.uri}, Status: $status, HTTP method: $httpMethod, User agent: $userAgent, CallId: ${call.callId}"
+        }
+    }
     install(StatusPages) {
         exception<Throwable> {
             call.respond(HttpStatusCode.InternalServerError, "Something went wrong, excuse us!")
@@ -31,6 +60,9 @@ fun Application.module(dbConnectionString: String = environment.config.property(
             // A better solution besides of course handling more specific exceptions, is to use HTML pages,
             // see https://ktor.io/docs/status-pages.html#statusfile
         }
+    }
+    install(ContentNegotiation) {
+        jackson()
     }
 
     koin {
