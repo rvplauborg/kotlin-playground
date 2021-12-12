@@ -15,11 +15,13 @@ import io.ktor.routing.Route
 import io.ktor.routing.post
 import java.util.UUID
 
+data class CreateGameResponse(val gameId: UUID)
+
 fun Route.createGameRoute(mediator: Mediator, uuidGenerator: UUIDGenerator) {
     post("/game/create-game") {
         val gameId = uuidGenerator.generate()
         mediator.executeCommandAsync(CreateGameCommand.of(gameId))
-        call.respond(HttpStatusCode.OK, gameId)
+        call.respond(HttpStatusCode.OK, CreateGameResponse(gameId))
     }
 }
 
