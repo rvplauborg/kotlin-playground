@@ -55,7 +55,7 @@ tasks {
     }
     compileKotlin {
         kotlinOptions.allWarningsAsErrors = true
-        kotlinOptions.jvmTarget = JavaLanguageVersion.of("15").toString()
+        kotlinOptions.jvmTarget = JavaLanguageVersion.of("17").toString()
     }
     koverCollectReports {
         outputDir.set(rootProject.layout.buildDirectory.dir("my-reports"))

@@ -3,7 +3,7 @@ version = "0.0.1"
 // Add compose gradle plugin
 plugins {
     kotlin("multiplatform")
-    id("org.jetbrains.compose") version "1.0.0"
+    id("org.jetbrains.compose") version "1.0.1-rc2"
 }
 
 // Add maven repositories
