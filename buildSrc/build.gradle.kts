@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     // TODO would be great to deduplicate the versions across buildSrc and the actual projects & convention plugins
-    val kotlinVersion = "1.6.0"
+    val kotlinVersion = "1.5.31"
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
     implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0-RC2")
