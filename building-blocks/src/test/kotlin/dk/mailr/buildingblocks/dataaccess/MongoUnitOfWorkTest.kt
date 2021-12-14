@@ -31,4 +31,11 @@ internal class MongoUnitOfWorkTest {
 
         verify { mockClientSession.abortTransaction() }
     }
+
+    @Test
+    fun close() {
+        unitOfWork.close()
+
+        verify { mockClientSession.close() }
+    }
 }

@@ -11,8 +11,6 @@ interface UnitOfWork : Closeable {
 }
 
 open class MongoUnitOfWork(private val session: ClientSession) : UnitOfWork {
-    private val logger = LoggerFactory.getLogger(javaClass)
-
     override fun start() {
         session.startTransaction()
     }
@@ -26,13 +24,6 @@ open class MongoUnitOfWork(private val session: ClientSession) : UnitOfWork {
     }
 
     override fun close() {
-        stop()
-    }
-
-    private fun stop() {
-        if (session.hasActiveTransaction()) {
-            session.abortTransaction()
-            logger.warn("ABORTED TRANSACTION on destroy. You must ensure commit has been called before exiting..")
-        }
+        session.close()
     }
 }
