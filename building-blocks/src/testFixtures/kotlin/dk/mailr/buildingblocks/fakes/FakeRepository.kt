@@ -15,10 +15,6 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
         return entity
     }
 
-    override fun deleteById(id: EntityId<TEntity>) {
-        entities.remove(id)
-    }
-
     override fun delete(entity: TEntity) {
         entities.remove(entity.id, entity)
     }
@@ -34,11 +30,6 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
     override suspend fun saveChanges() {
         publishedEvents.addAll(entities.flatMap { it.value.domainEvents })
         entities.forEach { it.value.clearDomainEvents() }
-    }
-
-    override fun saveAll(entities: List<TEntity>): List<TEntity> {
-        entities.forEach { this.entities[it.id] = it }
-        return entities
     }
 
     override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
