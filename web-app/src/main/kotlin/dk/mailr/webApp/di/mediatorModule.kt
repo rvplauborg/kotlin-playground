@@ -13,6 +13,7 @@ import org.koin.dsl.module
 val mediatorModule = module {
     single(createdAtStart = true) {
         CommandBusBuilder(
+            // TODO split out Mediator DI configuration so each module configures its own handlers for injection
             ManualDependencyProvider(
                 hashMapOf(
                     CreateGameCommandHandler::class.java to inject<CreateGameCommandHandler>(),
