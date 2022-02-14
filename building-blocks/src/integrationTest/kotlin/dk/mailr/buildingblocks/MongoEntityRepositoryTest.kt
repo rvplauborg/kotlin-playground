@@ -18,7 +18,6 @@ import org.amshove.kluent.shouldBeNull
 import org.amshove.kluent.shouldContainAll
 import org.amshove.kluent.shouldHaveSingleItem
 import org.amshove.kluent.shouldHaveSize
-import org.amshove.kluent.shouldMatchAllWith
 import org.amshove.kluent.shouldNotBeNull
 import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.Test
@@ -85,7 +84,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     fun `should return matching entities when attempting to find by ids`() {
         val entitiesToSave = fixture<List<TestEntity>>()
         val idsForNonExistingEntities = fixture<List<EntityId<TestEntity>>>()
-        entityRepository.saveAll(entitiesToSave)
+        entitiesToSave.forEach { entityRepository.save(it) }
 
         val idsToFindFor = entitiesToSave.map { it.id } + idsForNonExistingEntities
         val entities = entityRepository.findByIds(idsToFindFor)
@@ -102,30 +101,6 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         val entity = entityRepository.getById(savedEntity.id)
         entity.name shouldBeEqualTo "other-awesome-name"
-    }
-
-    @Test
-    fun `should be possible to save multiple entities`() {
-        val entityToSave1 = TestEntity(EntityId(UUID.randomUUID()))
-        val entityToSave2 = TestEntity(EntityId(UUID.randomUUID()))
-
-        entityRepository.saveAll(listOf(entityToSave1, entityToSave2))
-
-        val entities = entityRepository.findByIds(listOf(entityToSave1.id, entityToSave2.id))
-        entities.shouldHaveSize(2)
-    }
-
-    @Test
-    fun `should be possible to update multiple entities`() {
-        val entityToSave1 = TestEntity(EntityId(UUID.randomUUID()))
-        val entityToSave2 = TestEntity(EntityId(UUID.randomUUID()))
-        val savedEntities = entityRepository.saveAll(listOf(entityToSave1, entityToSave2))
-        savedEntities.map { it.name = "new-name" }
-
-        entityRepository.saveAll(savedEntities)
-
-        val entities = entityRepository.findByIds(listOf(entityToSave1.id, entityToSave2.id))
-        entities.shouldHaveSize(2).shouldMatchAllWith { it.name == "new-name" }
     }
 
     @Test

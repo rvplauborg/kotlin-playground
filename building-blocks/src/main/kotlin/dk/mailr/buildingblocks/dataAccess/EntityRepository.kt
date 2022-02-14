@@ -20,11 +20,7 @@ interface EntityRepository<TEntity : DomainEntity<TEntity>> {
 
     fun <S : TEntity> save(entity: S): S
 
-    fun saveAll(entities: List<TEntity>): List<TEntity>
-
     fun delete(entity: TEntity)
-
-    fun deleteById(id: EntityId<TEntity>)
 
     suspend fun saveChanges()
 }
@@ -53,18 +49,9 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
         return entity
     }
 
-    override fun saveAll(entities: List<TEntity>): List<TEntity> {
-        entities.forEach { mongoCollection.save(clientSession, it) }
-        return entities
-    }
-
     override fun delete(entity: TEntity) {
         mongoCollection.deleteOneById(clientSession, entity.id)
         eventsPublisher.enqueueEventsFrom(entity)
-    }
-
-    override fun deleteById(id: EntityId<TEntity>) {
-        mongoCollection.deleteOneById(clientSession, id)
     }
 
     override suspend fun saveChanges() {
