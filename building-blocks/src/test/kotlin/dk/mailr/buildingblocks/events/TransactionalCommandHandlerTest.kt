@@ -2,7 +2,7 @@ package dk.mailr.buildingblocks.events
 
 import com.trendyol.kediatr.Command
 import dk.mailr.buildingblocks.fakes.FakeUnitOfWork
-import dk.mailr.buildingblocks.mediator.TransactionalCommandHandler
+import dk.mailr.buildingblocks.mediator.AsyncTransactionalCommandHandler
 import io.mockk.spyk
 import io.mockk.verifyOrder
 import kotlinx.coroutines.runBlocking
@@ -13,8 +13,8 @@ internal class TransactionalCommandHandlerTest {
 
     private val fakeUnitOfWork = spyk(FakeUnitOfWork())
 
-    private val transactionalCommandHandler: TransactionalCommandHandler<TestCommand> =
-        object : TransactionalCommandHandler<TestCommand>(fakeUnitOfWork) {
+    private val transactionalCommandHandler: AsyncTransactionalCommandHandler<TestCommand> =
+        object : AsyncTransactionalCommandHandler<TestCommand>(fakeUnitOfWork) {
 
             override suspend fun handleInTransaction(command: TestCommand) {
                 fakeUnitOfWork.toString()

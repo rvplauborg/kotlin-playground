@@ -4,7 +4,7 @@ import com.trendyol.kediatr.AsyncCommandHandler
 import com.trendyol.kediatr.Command
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 
-abstract class TransactionalCommandHandler<TCommand : Command>(
+abstract class AsyncTransactionalCommandHandler<TCommand : Command>(
     private val unitOfWork: UnitOfWork,
 ) : AsyncCommandHandler<TCommand> {
     final override suspend fun handleAsync(command: TCommand) {
@@ -15,11 +15,6 @@ abstract class TransactionalCommandHandler<TCommand : Command>(
         } catch (e: Exception) {
             unitOfWork.abort()
             throw e
-        }
-        unitOfWork.use {
-            it.start()
-            handleInTransaction(command)
-            it.commit()
         }
     }
 

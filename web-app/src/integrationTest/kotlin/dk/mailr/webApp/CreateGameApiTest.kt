@@ -15,8 +15,6 @@ class CreateGameApiTest : BaseApiTest() {
         withTestApplication({ module(DB_CONTAINER.replicaSetUrl) }) {
             handleRequest(HttpMethod.Post, "/game/create-game").apply {
                 response.status() shouldBe HttpStatusCode.OK
-                val actual = response.content
-                assertNotNull(actual)
                 response.content.shouldNotBeNull()
             }
         }

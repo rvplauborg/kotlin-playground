@@ -4,7 +4,7 @@ import com.trendyol.kediatr.Command
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
-import dk.mailr.buildingblocks.mediator.TransactionalCommandHandler
+import dk.mailr.buildingblocks.mediator.AsyncTransactionalCommandHandler
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.pokerDomain.TexasHoldEmGame
 import io.ktor.application.call
@@ -33,7 +33,7 @@ data class CreateGameCommand private constructor(internal val gameId: EntityId<T
 class CreateGameCommandHandler(
     private val gameRepository: GameRepository,
     private val unitOfWork: UnitOfWork,
-) : TransactionalCommandHandler<CreateGameCommand>(unitOfWork) {
+) : AsyncTransactionalCommandHandler<CreateGameCommand>(unitOfWork) {
     override suspend fun handleInTransaction(command: CreateGameCommand) {
         gameRepository.save(TexasHoldEmGame.create(command.gameId))
         gameRepository.notifyAll()

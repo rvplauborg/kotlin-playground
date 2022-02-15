@@ -26,8 +26,6 @@ class GetGameByIdApiTest : BaseApiTest() {
 
             handleRequest(HttpMethod.Get, "/game/$gameId").apply {
                 response.status() shouldBe HttpStatusCode.OK
-                val actual = response.content
-                assertNotNull(actual)
                 response.content.shouldNotBeNull()
             }
         }
