@@ -1,7 +1,6 @@
 package dk.mailr.buildingblocks.dataAccess
 
 import com.mongodb.client.ClientSession
-import org.slf4j.LoggerFactory
 import java.io.Closeable
 
 interface UnitOfWork : Closeable {

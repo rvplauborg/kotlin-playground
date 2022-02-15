@@ -8,6 +8,7 @@ abstract class TransactionalCommandHandler<TCommand : Command>(
     private val unitOfWork: UnitOfWork,
 ) : AsyncCommandHandler<TCommand> {
     final override suspend fun handleAsync(command: TCommand) {
+        @Suppress("TooGenericExceptionCaught") // we need to ensure that we abort in the general case
         try {
             unitOfWork.start()
             handleInTransaction(command)
