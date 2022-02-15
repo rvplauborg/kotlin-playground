@@ -6,9 +6,9 @@ import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.exceptions.NotFoundException
 import dk.mailr.buildingblocks.mediator.EventPublisher
+import org.litote.kmongo.`in`
 import org.litote.kmongo.deleteOneById
 import org.litote.kmongo.findOneById
-import org.litote.kmongo.`in`
 import org.litote.kmongo.save
 
 interface EntityRepository<TEntity : DomainEntity<TEntity>> {
@@ -22,7 +22,7 @@ interface EntityRepository<TEntity : DomainEntity<TEntity>> {
 
     fun delete(entity: TEntity)
 
-    suspend fun saveChanges()
+    suspend fun notifyAll()
 }
 
 abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
@@ -54,7 +54,7 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
         eventsPublisher.enqueueEventsFrom(entity)
     }
 
-    override suspend fun saveChanges() {
+    override suspend fun notifyAll() {
         eventsPublisher.publishAll()
     }
 }

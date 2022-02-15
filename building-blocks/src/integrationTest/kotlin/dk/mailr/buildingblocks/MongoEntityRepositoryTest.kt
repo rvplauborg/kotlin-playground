@@ -117,7 +117,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
         entityRepository.save(entityToSave.withEvent())
 
-        entityRepository.saveChanges()
+        entityRepository.notifyAll()
 
         mediator.notifications.shouldBeSingleton()
     }
@@ -128,7 +128,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         val savedEntity = entityRepository.save(entityToSave.withEvent())
         entityRepository.delete(savedEntity.withEvent())
 
-        entityRepository.saveChanges()
+        entityRepository.notifyAll()
 
         mediator.notifications shouldHaveSize 2
     }

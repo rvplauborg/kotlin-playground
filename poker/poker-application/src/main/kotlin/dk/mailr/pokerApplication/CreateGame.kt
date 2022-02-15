@@ -36,7 +36,7 @@ class CreateGameCommandHandler(
 ) : TransactionalCommandHandler<CreateGameCommand>(unitOfWork) {
     override suspend fun handleInTransaction(command: CreateGameCommand) {
         gameRepository.save(TexasHoldEmGame.create(command.gameId))
-        gameRepository.saveChanges()
+        gameRepository.notifyAll()
         unitOfWork.commit()
     }
 }

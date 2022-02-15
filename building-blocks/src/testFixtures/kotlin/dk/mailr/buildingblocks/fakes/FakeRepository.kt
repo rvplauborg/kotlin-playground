@@ -27,7 +27,7 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
         return entities[id] ?: throw NotFoundException("Entity with id $id does not exist")
     }
 
-    override suspend fun saveChanges() {
+    override suspend fun notifyAll() {
         publishedEvents.addAll(entities.flatMap { it.value.domainEvents })
         entities.forEach { it.value.clearDomainEvents() }
     }
