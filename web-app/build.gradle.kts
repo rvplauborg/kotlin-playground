@@ -15,6 +15,8 @@ dependencies {
     implementation(projects.buildingBlocks)
     implementation(projects.poker.pokerApplication)
     implementation(projects.poker.pokerInfrastructure)
+    implementation(projects.auctionApp.auction.auctionApplication)
+    implementation(projects.auctionApp.auction.auctionInfrastructure)
     val ktorVersion: String by project
     implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")

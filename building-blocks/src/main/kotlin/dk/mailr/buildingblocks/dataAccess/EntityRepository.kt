@@ -6,9 +6,9 @@ import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.exceptions.NotFoundException
 import dk.mailr.buildingblocks.mediator.EventPublisher
-import org.litote.kmongo.`in`
 import org.litote.kmongo.deleteOneById
 import org.litote.kmongo.findOneById
+import org.litote.kmongo.`in`
 import org.litote.kmongo.save
 
 interface EntityRepository<TEntity : DomainEntity<TEntity>> {

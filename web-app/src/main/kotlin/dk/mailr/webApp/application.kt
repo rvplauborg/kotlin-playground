@@ -1,5 +1,7 @@
 package dk.mailr.webApp
 
+import dk.mailr.auctionApplication.auctionRouting
+import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
@@ -71,6 +73,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
             coreModule(dbConnectionString),
             mediatorModule,
             pokerModule,
+            auctionModule,
         )
     }
 
@@ -78,6 +81,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         val mediator by inject<Mediator>()
         val uuidGenerator by inject<UUIDGenerator>()
         pokerRouting(mediator, uuidGenerator)
+        auctionRouting(mediator, uuidGenerator)
     }
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
