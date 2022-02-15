@@ -14,6 +14,7 @@ import org.koin.dsl.module
 import org.litote.kmongo.KMongo
 
 fun coreModule(dbConnectionString: String) = module {
+    // TODO scoping, currently everything is singleton
     single<MongoClient> {
         KMongo.createClient(
             MongoClientSettings.builder()
