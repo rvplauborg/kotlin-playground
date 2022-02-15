@@ -10,16 +10,15 @@ import dk.mailr.buildingblocks.fakes.TestEntity
 import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.buildingblocks.mediator.DomainEventPublisher
 import dk.mailr.buildingblocks.mediator.EventPublisher
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldBeSingleton
+import io.kotest.matchers.collections.shouldContainAll
+import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
-import org.amshove.kluent.invoking
-import org.amshove.kluent.shouldBeEmpty
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldBeNull
-import org.amshove.kluent.shouldContainAll
-import org.amshove.kluent.shouldHaveSingleItem
-import org.amshove.kluent.shouldHaveSize
-import org.amshove.kluent.shouldNotBeNull
-import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.Test
 import org.litote.kmongo.getCollection
 import java.util.UUID
@@ -49,7 +48,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     @Test
     fun `should error when attempting to read entity which does not exist`() {
         val randomId = EntityId<TestEntity>(UUID.randomUUID())
-        invoking { entityRepository.getById(randomId) }.shouldThrow(NotFoundException::class)
+        shouldThrow<NotFoundException> { entityRepository.getById(randomId) }
     }
 
     @Test
@@ -68,7 +67,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         val entity = entityRepository.findById(entityToSave.id)
 
-        entity shouldBeEqualTo savedEntity
+        entity shouldBe savedEntity
     }
 
     @Test
@@ -89,7 +88,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         val idsToFindFor = entitiesToSave.map { it.id } + idsForNonExistingEntities
         val entities = entityRepository.findByIds(idsToFindFor)
 
-        entities.shouldContainAll(entitiesToSave)
+        entities shouldContainAll entitiesToSave
     }
 
     @Test
@@ -100,7 +99,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         savedEntity = entityRepository.save(savedEntity.withName("other-awesome-name"))
 
         val entity = entityRepository.getById(savedEntity.id)
-        entity.name shouldBeEqualTo "other-awesome-name"
+        entity.name shouldBe "other-awesome-name"
     }
 
     @Test
@@ -110,7 +109,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         entityRepository.delete(savedEntity)
 
-        invoking { entityRepository.getById(entityToSave.id) } shouldThrow NotFoundException::class
+        shouldThrow<NotFoundException> { entityRepository.getById(entityToSave.id) }
     }
 
     @Test
@@ -120,7 +119,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         entityRepository.saveChanges()
 
-        mediator.notifications.shouldHaveSingleItem()
+        mediator.notifications.shouldBeSingleton()
     }
 
     @Test
@@ -131,6 +130,6 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         entityRepository.saveChanges()
 
-        mediator.notifications.shouldHaveSize(2)
+        mediator.notifications shouldHaveSize 2
     }
 }

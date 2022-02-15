@@ -74,8 +74,10 @@ dependencies {
     implementation("org.valiktor:valiktor-core:$valiktorVersion")
 
     testImplementation(kotlin("test")) // will automatically include JUnit 5 based on our 'useJUnitPlatform' configuration for tasks.test
-    val kluentVersion: String by project
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
+    val kotestVersion: String by project
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+
     testImplementation("org.valiktor:valiktor-test:$valiktorVersion")
     val fixtureVersion: String by project
     testImplementation("com.appmattus.fixture:fixture:$fixtureVersion")

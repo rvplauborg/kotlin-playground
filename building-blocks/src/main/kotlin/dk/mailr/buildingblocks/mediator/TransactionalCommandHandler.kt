@@ -8,6 +8,13 @@ abstract class TransactionalCommandHandler<TCommand : Command>(
     private val unitOfWork: UnitOfWork,
 ) : AsyncCommandHandler<TCommand> {
     final override suspend fun handleAsync(command: TCommand) {
+        try {
+            unitOfWork.start()
+            handleInTransaction(command)
+        } catch (e: Exception) {
+            unitOfWork.abort()
+            throw e
+        }
         unitOfWork.use {
             it.start()
             handleInTransaction(command)

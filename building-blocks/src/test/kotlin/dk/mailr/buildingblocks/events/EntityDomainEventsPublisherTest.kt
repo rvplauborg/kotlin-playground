@@ -5,10 +5,10 @@ import dk.mailr.buildingblocks.fakes.TestEntity
 import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.buildingblocks.mediator.DomainEvent
 import dk.mailr.buildingblocks.mediator.DomainEventPublisher
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveSingleElement
 import kotlinx.coroutines.runBlocking
-import org.amshove.kluent.shouldBeEmpty
-import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldHaveSize
 import org.junit.jupiter.api.Test
 
 internal class EntityDomainEventsPublisherTest {
@@ -56,7 +56,7 @@ internal class EntityDomainEventsPublisherTest {
         entityEventsPublisher.publishAll()
         entityEventsPublisher.publishAll()
 
-        fakeCommandBus.notifications shouldHaveSize 1 shouldContain domainEvent
+        fakeCommandBus.notifications shouldHaveSingleElement domainEvent
     }
 
     private fun entityWithEvent(): Pair<TestEntity, DomainEvent> {

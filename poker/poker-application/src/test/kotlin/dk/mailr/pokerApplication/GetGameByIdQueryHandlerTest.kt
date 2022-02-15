@@ -3,10 +3,9 @@ package dk.mailr.pokerApplication
 import dk.mailr.buildingblocks.exceptions.NotFoundException
 import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.pokerDomain.TexasHoldEmGame
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
-import org.amshove.kluent.coInvoking
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldThrow
 import org.junit.jupiter.api.Test
 
 class GetGameByIdQueryHandlerTest {
@@ -20,13 +19,13 @@ class GetGameByIdQueryHandlerTest {
 
         val result = handler.handleAsync(query)
 
-        result.gameId shouldBeEqualTo query.gameId.value
+        result.gameId shouldBe query.gameId.value
     }
 
     @Test
     fun `should fail if game does not exist`() = runBlocking<Unit> {
         val query = fixture<GetGameByIdQuery>()
 
-        coInvoking { handler.handleAsync(query) } shouldThrow NotFoundException::class
+        shouldThrow<NotFoundException> { handler.handleAsync(query) }
     }
 }

@@ -3,11 +3,10 @@ package dk.mailr.buildingblocks.mediator
 import dk.mailr.buildingblocks.fakes.FakeMediator
 import dk.mailr.buildingblocks.fakes.TestEntity
 import dk.mailr.buildingblocks.fakes.fixture
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveSingleElement
 import kotlinx.coroutines.runBlocking
-import org.amshove.kluent.shouldBeEmpty
-import org.amshove.kluent.shouldBeEqualTo
-import org.amshove.kluent.shouldContain
-import org.amshove.kluent.shouldHaveSingleItem
 import org.junit.jupiter.api.Test
 
 internal class DomainEventPublisherTest {
@@ -54,7 +53,7 @@ internal class DomainEventPublisherTest {
         entityEventsPublisher.publishAll()
         entityEventsPublisher.publishAll()
 
-        fakeCommandBus.notifications.shouldHaveSingleItem() shouldBeEqualTo domainEvent
+        fakeCommandBus.notifications shouldHaveSingleElement domainEvent
     }
 
     private fun entityWithEvent(): Pair<TestEntity, DomainEvent> {
