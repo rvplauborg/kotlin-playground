@@ -12,10 +12,11 @@ import org.koin.dsl.module
 import org.litote.kmongo.KMongo
 
 fun coreModule(dbConnectionString: String) = module {
-    // TODO scoping, currently everything is singleton
-    single<MongoClient> { KMongo.createClient(ConnectionString(dbConnectionString)) }
-    single<ClientSession> { get<MongoClient>().startSession() }
-    single<UnitOfWork> { MongoUnitOfWork(get()) }
+    single { KMongo.createClient(ConnectionString(dbConnectionString)) }
     single<MongoDatabase> { get<MongoClient>().getDatabase("vertical-template-db") }
+    scope(sessionScope) {
+        scoped<ClientSession> { get<MongoClient>().startSession() }
+        scoped<UnitOfWork> { MongoUnitOfWork(get()) }
+    }
     single<UUIDGenerator> { RandomUUIDGenerator() }
 }

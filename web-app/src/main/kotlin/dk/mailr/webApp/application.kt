@@ -3,8 +3,6 @@ package dk.mailr.webApp
 import dk.mailr.auctionApplication.auctionRouting
 import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.buildingblocks.di.coreModule
-import dk.mailr.buildingblocks.mediator.Mediator
-import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -25,7 +23,6 @@ import io.ktor.request.uri
 import io.ktor.response.respond
 import io.ktor.routing.routing
 import org.koin.core.logger.Level
-import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
 import java.util.concurrent.atomic.AtomicInteger
@@ -75,9 +72,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     }
 
     routing {
-        val mediator by inject<Mediator>()
-        val uuidGenerator by inject<UUIDGenerator>()
-        auctionRouting(mediator, uuidGenerator)
+        auctionRouting()
     }
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
