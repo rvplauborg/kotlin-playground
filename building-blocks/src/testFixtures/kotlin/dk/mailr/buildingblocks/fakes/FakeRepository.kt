@@ -10,13 +10,13 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
     val entities = mutableMapOf<EntityId<TEntity>, TEntity>()
     val publishedEvents = mutableListOf<DomainEvent>()
 
-    override fun <S : TEntity> save(entity: S): S {
-        entities[entity.id] = entity
+    override fun save(entity: TEntity): TEntity {
+        entities[entity._id] = entity
         return entity
     }
 
     override fun delete(entity: TEntity) {
-        entities.remove(entity.id, entity)
+        entities.remove(entity._id, entity)
     }
 
     override fun findById(id: EntityId<TEntity>): TEntity? {
@@ -33,6 +33,6 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
     }
 
     override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
-        return entities.values.filter { it.id in ids }
+        return entities.values.filter { it._id in ids }
     }
 }

@@ -27,6 +27,7 @@ dependencies {
     testImplementation("io.insert-koin:koin-test-junit5:$koinVersion") {
         exclude("org.jetbrains.kotlin", "kotlin-test-junit")
     }
+    testImplementation(testFixtures(projects.buildingBlocks))
 
     integrationTestImplementation("io.ktor:ktor-server-tests:$ktorVersion")
     integrationTestImplementation("org.testcontainers:mongodb:1.16.2")

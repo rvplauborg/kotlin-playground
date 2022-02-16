@@ -5,15 +5,14 @@ import org.valiktor.functions.isNotEqualTo
 import org.valiktor.validate
 import java.util.UUID
 
-@JvmInline
-value class EntityId<T : DomainEntity<T>>(val value: UUID) {
-    init {
-        validate(this) {
-            validate(EntityId<T>::value).isNotEqualTo(emptyUUID)
-        }
+data class EntityId<T : DomainEntity<T>> private constructor(val value: String) {
+    companion object {
+        operator fun <T : DomainEntity<T>> invoke(uuid: UUID): EntityId<T> = EntityId(uuid.toString())
     }
 
-    override fun toString(): String {
-        return value.toString()
+    init {
+        validate(this) {
+            validate(EntityId<T>::value).isNotEqualTo(emptyUUID.toString())
+        }
     }
 }

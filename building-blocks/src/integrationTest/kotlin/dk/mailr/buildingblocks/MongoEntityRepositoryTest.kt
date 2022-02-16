@@ -41,7 +41,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         entityRepository.save(entityToSave)
 
-        val entity = entityRepository.findById(entityToSave.id)
+        val entity = entityRepository.findById(entityToSave._id)
         entity.shouldNotBeNull()
     }
 
@@ -65,7 +65,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
         val savedEntity = entityRepository.save(entityToSave)
 
-        val entity = entityRepository.findById(entityToSave.id)
+        val entity = entityRepository.findById(entityToSave._id)
 
         entity shouldBe savedEntity
     }
@@ -85,7 +85,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
         val idsForNonExistingEntities = fixture<List<EntityId<TestEntity>>>()
         entitiesToSave.forEach { entityRepository.save(it) }
 
-        val idsToFindFor = entitiesToSave.map { it.id } + idsForNonExistingEntities
+        val idsToFindFor = entitiesToSave.map { it._id } + idsForNonExistingEntities
         val entities = entityRepository.findByIds(idsToFindFor)
 
         entities shouldContainAll entitiesToSave
@@ -98,7 +98,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         savedEntity = entityRepository.save(savedEntity.withName("other-awesome-name"))
 
-        val entity = entityRepository.getById(savedEntity.id)
+        val entity = entityRepository.getById(savedEntity._id)
         entity.name shouldBe "other-awesome-name"
     }
 
@@ -109,7 +109,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
 
         entityRepository.delete(savedEntity)
 
-        shouldThrow<NotFoundException> { entityRepository.getById(entityToSave.id) }
+        shouldThrow<NotFoundException> { entityRepository.getById(entityToSave._id) }
     }
 
     @Test

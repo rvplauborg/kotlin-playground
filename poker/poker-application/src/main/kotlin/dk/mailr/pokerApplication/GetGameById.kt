@@ -26,12 +26,12 @@ data class GetGameByIdQuery private constructor(internal val gameId: EntityId<Te
     }
 }
 
-data class GetGameByIdResponse(val gameId: UUID)
+data class GetGameByIdResponse(val gameId: String)
 
 class GetGameByIdQueryHandler(private val gameRepository: GameRepository) :
     AsyncQueryHandler<GetGameByIdQuery, GetGameByIdResponse> {
     override suspend fun handleAsync(query: GetGameByIdQuery): GetGameByIdResponse {
         val game = gameRepository.getById(query.gameId)
-        return GetGameByIdResponse(game.id.value)
+        return GetGameByIdResponse(game._id.value)
     }
 }

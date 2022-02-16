@@ -1,12 +1,11 @@
 package dk.mailr.buildingblocks.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
 import dk.mailr.buildingblocks.mediator.DomainEvent
 
 abstract class DomainEntity<T : DomainEntity<T>> {
-    @get:JsonProperty("_id")
-    abstract val id: EntityId<T>
+    @Suppress("PropertyName", "VariableNaming") // For now with current KMongo setup we need to name it _id explicitly
+    abstract val _id: EntityId<T>
 
     @JsonIgnore
     private val _domainEvents = mutableListOf<DomainEvent>()

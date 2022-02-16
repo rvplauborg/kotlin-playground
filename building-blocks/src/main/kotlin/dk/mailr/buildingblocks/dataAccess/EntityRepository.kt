@@ -18,7 +18,7 @@ interface EntityRepository<TEntity : DomainEntity<TEntity>> {
 
     fun getById(id: EntityId<TEntity>): TEntity
 
-    fun <S : TEntity> save(entity: S): S
+    fun save(entity: TEntity): TEntity
 
     fun delete(entity: TEntity)
 
@@ -40,17 +40,17 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
     }
 
     override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
-        return mongoCollection.find(clientSession, DomainEntity<TEntity>::id `in` ids).toList()
+        return mongoCollection.find(clientSession, DomainEntity<TEntity>::_id `in` ids).toList()
     }
 
-    override fun <S : TEntity> save(entity: S): S {
+    override fun save(entity: TEntity): TEntity {
         mongoCollection.save(clientSession, entity)
         eventsPublisher.enqueueEventsFrom(entity)
         return entity
     }
 
     override fun delete(entity: TEntity) {
-        mongoCollection.deleteOneById(clientSession, entity.id)
+        mongoCollection.deleteOneById(clientSession, entity._id)
         eventsPublisher.enqueueEventsFrom(entity)
     }
 

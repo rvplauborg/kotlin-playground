@@ -6,7 +6,7 @@ import dk.mailr.pokerDomain.events.GameCreatedEvent
 import java.util.UUID
 
 class TexasHoldEmGame private constructor(
-    override val id: EntityId<TexasHoldEmGame>,
+    override val _id: EntityId<TexasHoldEmGame>,
 ) : DomainEntity<TexasHoldEmGame>() {
     companion object {
         fun create(id: EntityId<TexasHoldEmGame>) = TexasHoldEmGame(id).apply {
