@@ -6,4 +6,5 @@ import io.ktor.routing.Routing
 
 fun Routing.auctionRouting(mediator: Mediator, uuidGenerator: UUIDGenerator) {
     createAuctionRoute(mediator, uuidGenerator)
+    getAuctionRoute(mediator)
 }
