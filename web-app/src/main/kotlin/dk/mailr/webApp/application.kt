@@ -36,7 +36,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(dbConnectionString: String = environment.config.property("mongodb.uri").getString()) {
     install(CallId) {
-        // Tries to retrieve a callId from an ApplicationCall. You can add several retrievers and all will be executed coalescing until one of them is not null.
+        // Tries to retrieve a callId from an ApplicationCall.
         retrieve { it.request.header(HttpHeaders.XRequestId) }
 
         // If can't retrieve a callId from the ApplicationCall, it will try the generate blocks coalescing until one of them is not null.
