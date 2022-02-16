@@ -18,6 +18,8 @@ dependencies {
     implementation(projects.auctionApp.auction.auctionApplication)
     implementation(projects.auctionApp.auction.auctionInfrastructure)
     val ktorVersion: String by project
+    val logbackVersion: String by project
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     val koinVersion: String by project

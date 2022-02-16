@@ -17,7 +17,7 @@ import io.ktor.routing.post
 import java.util.UUID
 
 fun Route.createAuctionRoute(mediator: Mediator, uuidGenerator: UUIDGenerator) {
-    post("/auction/create-auction") {
+    post("/create-auction") {
         val request = call.receive<CreateAuctionRequest>()
         val auctionId = uuidGenerator.generate()
         mediator.executeCommandAsync(CreateAuctionCommand.of(auctionId, request.auctionName))
@@ -28,10 +28,7 @@ fun Route.createAuctionRoute(mediator: Mediator, uuidGenerator: UUIDGenerator) {
 data class CreateAuctionRequest(val auctionName: String)
 data class CreateAuctionResponse(val auctionId: UUID)
 
-class CreateAuctionCommand(
-    internal val auctionId: EntityId<Auction>,
-    internal val auctionName: AuctionName,
-) : Command {
+class CreateAuctionCommand(internal val auctionId: EntityId<Auction>, internal val auctionName: AuctionName) : Command {
     companion object {
         fun of(auctionId: UUID, auctionName: String) = CreateAuctionCommand(EntityId(auctionId), AuctionName(auctionName))
     }
