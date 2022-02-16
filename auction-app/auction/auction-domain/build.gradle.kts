@@ -4,4 +4,6 @@ plugins {
 
 dependencies {
     implementation(projects.buildingBlocks)
+
+    testImplementation(testFixtures(projects.buildingBlocks))
 }

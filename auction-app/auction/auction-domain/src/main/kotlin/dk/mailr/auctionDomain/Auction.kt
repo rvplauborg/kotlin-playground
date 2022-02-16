@@ -7,6 +7,9 @@ data class Auction private constructor(
     override val _id: EntityId<Auction>,
     val name: AuctionName,
 ) : DomainEntity<Auction>() {
+    var status = AuctionStatus.CREATED
+        private set
+
     companion object {
         fun create(id: EntityId<Auction>, name: AuctionName): Auction {
             return Auction(id, name)
