@@ -19,9 +19,6 @@ dependencyResolutionManagement {
 // as Gradle will fail. See https://github.com/gradle/gradle/issues/847 for more information.
 include("building-blocks")
 include("web-app")
-include("poker:poker-application")
-include("poker:poker-infrastructure")
-include("poker:poker-domain")
 include("auction-app:auction:auction-application")
 include("auction-app:auction:auction-domain")
 include("auction-app:auction:auction-infrastructure")

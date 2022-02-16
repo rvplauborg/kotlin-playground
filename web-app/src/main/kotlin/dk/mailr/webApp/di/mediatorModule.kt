@@ -13,10 +13,7 @@ import org.koin.dsl.module
 val mediatorModule = module {
     single(createdAtStart = true) {
         CommandBusBuilder(
-            ManualDependencyProvider(
-                get<PokerHandlers>().map
-                    .plus(get<AuctionHandlers>().map)
-            )
+            ManualDependencyProvider(get<AuctionHandlers>().map)
         ).build()
     }
     single<Mediator> { MainMediator(get()) }

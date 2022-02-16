@@ -5,8 +5,6 @@ import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
-import dk.mailr.pokerApplication.pokerRouting
-import dk.mailr.pokerInfrastructure.di.pokerModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -72,7 +70,6 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         modules(
             coreModule(dbConnectionString),
             mediatorModule,
-            pokerModule,
             auctionModule,
         )
     }
@@ -80,7 +77,6 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     routing {
         val mediator by inject<Mediator>()
         val uuidGenerator by inject<UUIDGenerator>()
-        pokerRouting(mediator, uuidGenerator)
         auctionRouting(mediator, uuidGenerator)
     }
 

@@ -13,8 +13,6 @@ repositories {
 
 dependencies {
     implementation(projects.buildingBlocks)
-    implementation(projects.poker.pokerApplication)
-    implementation(projects.poker.pokerInfrastructure)
     implementation(projects.auctionApp.auction.auctionApplication)
     implementation(projects.auctionApp.auction.auctionInfrastructure)
     val ktorVersion: String by project
