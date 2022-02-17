@@ -23,6 +23,7 @@ fun Route.getAuctionRoute() {
 
         val id = call.parameters["id"] ?: return@get call.respondText("Bad Request", status = HttpStatusCode.BadRequest)
         val auction = mediator.executeQueryAsync(GetAuctionQuery.of(UUID.fromString(id)))
+        scope.close()
         call.respond(HttpStatusCode.OK, GetAuctionResponse(auction._id.value, auction.name.value))
     }
 }

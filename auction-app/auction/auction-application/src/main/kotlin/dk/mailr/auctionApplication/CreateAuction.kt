@@ -29,6 +29,7 @@ fun Route.createAuctionRoute() {
         val request = call.receive<CreateAuctionRequest>()
         val auctionId = uuidGenerator.generate()
         mediator.executeCommandAsync(CreateAuctionCommand.of(auctionId, request.auctionName))
+        scope.close()
         call.respond(HttpStatusCode.OK, CreateAuctionResponse(auctionId))
     }
 }
