@@ -7,5 +7,6 @@ fun Routing.auctionRouting() {
     route("auction") {
         createAuctionRoute()
         getAuctionRoute()
+        startAuctionRoute()
     }
 }
