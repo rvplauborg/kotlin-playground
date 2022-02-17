@@ -11,4 +11,5 @@ dependencies {
     implementation("io.insert-koin:koin-ktor:$koinVersion")
 
     testImplementation(testFixtures(projects.buildingBlocks))
+    testImplementation(testFixtures(projects.auctionApp.auction.auctionDomain))
 }

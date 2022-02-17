@@ -14,5 +14,5 @@ dependencies {
     testFixturesImplementation("org.testcontainers:mongodb:$testContainersVersion")
     testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
     val fixtureVersion: String by project
-    testFixturesImplementation("com.appmattus.fixture:fixture:$fixtureVersion")
+    testFixturesApi("com.appmattus.fixture:fixture:$fixtureVersion")
 }

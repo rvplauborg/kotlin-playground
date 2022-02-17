@@ -25,7 +25,7 @@ internal class AuctionTest {
 
     @Test
     fun `should be possible to start auction`() {
-        val auction = AuctionAny.simpleAuction
+        val auction = AuctionFixtures.simpleAuction
 
         auction.start()
 
@@ -35,7 +35,7 @@ internal class AuctionTest {
 
     @Test
     fun `should not be possible to start already started auction`() {
-        val auction = AuctionAny.startedAuction
+        val auction = AuctionFixtures.startedAuction
 
         shouldFailValidation<Auction> {
             auction.start()
