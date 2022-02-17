@@ -1,5 +1,6 @@
 package dk.mailr.auctionDomain
 
+import dk.mailr.auctionDomain.events.AuctionCreatedEvent
 import dk.mailr.auctionDomain.events.AuctionStartedEvent
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.fakes.fixture
@@ -19,6 +20,7 @@ internal class AuctionTest {
         auction._id shouldBe id
         auction.name shouldBe name
         auction.status shouldBe AuctionStatus.CREATED
+        auction.domainEvents shouldContain AuctionCreatedEvent(auction._id)
     }
 
     @Test

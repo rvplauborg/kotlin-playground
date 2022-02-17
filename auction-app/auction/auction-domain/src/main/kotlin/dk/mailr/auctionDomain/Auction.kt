@@ -1,5 +1,6 @@
 package dk.mailr.auctionDomain
 
+import dk.mailr.auctionDomain.events.AuctionCreatedEvent
 import dk.mailr.auctionDomain.events.AuctionStartedEvent
 import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
@@ -23,7 +24,7 @@ data class Auction private constructor(
 
     companion object {
         fun create(id: EntityId<Auction>, name: AuctionName): Auction {
-            return Auction(id, name)
+            return Auction(id, name).also { it.addDomainEvent(AuctionCreatedEvent(id)) }
         }
     }
 }
