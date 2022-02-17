@@ -70,6 +70,7 @@ detekt {
 dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // use same version of kotlin library versions
     implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     val valiktorVersion: String by project
     implementation("org.valiktor:valiktor-core:$valiktorVersion")
 
