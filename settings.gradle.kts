@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 // as Gradle will fail. See https://github.com/gradle/gradle/issues/847 for more information.
 include("building-blocks")
 include("web-app")
-include("auction-app:auction:auction-application")
-include("auction-app:auction:auction-domain")
-include("auction-app:auction:auction-infrastructure")
+include("clean-app:auction:auction-application")
+include("clean-app:auction:auction-domain")
+include("clean-app:auction:auction-infrastructure")
 include("compose-app")

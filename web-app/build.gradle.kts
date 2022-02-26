@@ -13,8 +13,8 @@ repositories {
 
 dependencies {
     implementation(projects.buildingBlocks)
-    implementation(projects.auctionApp.auction.auctionApplication)
-    implementation(projects.auctionApp.auction.auctionInfrastructure)
+    implementation(projects.cleanApp.auction.auctionApplication)
+    implementation(projects.cleanApp.auction.auctionInfrastructure)
     val ktorVersion: String by project
     val logbackVersion: String by project
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
