@@ -3,6 +3,7 @@ package dk.mailr.webApp
 import dk.mailr.auctionApplication.auctionRouting
 import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.buildingblocks.di.coreModule
+import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -74,6 +75,8 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     routing {
         auctionRouting()
     }
+
+    orderingModule()
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()

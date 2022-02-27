@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.buildingBlocks)
     implementation(projects.cleanApp.auction.auctionApplication)
     implementation(projects.cleanApp.auction.auctionInfrastructure)
+    implementation(projects.verticalApp.ordering)
     val ktorVersion: String by project
     val logbackVersion: String by project
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
