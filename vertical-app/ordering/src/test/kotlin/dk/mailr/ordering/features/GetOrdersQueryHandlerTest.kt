@@ -2,6 +2,7 @@ package dk.mailr.ordering.features
 
 import dk.mailr.ordering.FakeOrderRepository
 import dk.mailr.ordering.OrderFixtures
+import dk.mailr.ordering.OrderFixtures.Queries.getOrdersQuery
 import io.kotest.common.runBlocking
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -15,7 +16,7 @@ internal class GetOrdersQueryHandlerTest {
 
     @Test
     fun `should return empty list when no orders exist`() = runBlocking<Unit> {
-        val result = handler.handleAsync(GetOrdersQuery())
+        val result = handler.handleAsync(getOrdersQuery)
 
         result.orders.shouldBeEmpty()
     }
@@ -26,7 +27,7 @@ internal class GetOrdersQueryHandlerTest {
         fakeOrderRepository.save(OrderFixtures.newOrder())
         fakeOrderRepository.save(OrderFixtures.newOrder())
 
-        val result = handler.handleAsync(GetOrdersQuery())
+        val result = handler.handleAsync(getOrdersQuery)
 
         result.orders shouldHaveSize 3
     }
