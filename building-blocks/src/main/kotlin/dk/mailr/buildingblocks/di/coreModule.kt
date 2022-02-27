@@ -9,6 +9,7 @@ import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 import dk.mailr.buildingblocks.uuid.RandomUUIDGenerator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import org.koin.dsl.module
+import org.koin.dsl.onClose
 import org.litote.kmongo.KMongo
 
 fun coreModule(dbConnectionString: String) = module {
@@ -16,7 +17,9 @@ fun coreModule(dbConnectionString: String) = module {
     single<MongoDatabase> { get<MongoClient>().getDatabase("vertical-template-db") }
     scope(sessionScope) {
         scoped<ClientSession> { get<MongoClient>().startSession() }
-        scoped<UnitOfWork> { MongoUnitOfWork(get()) }
+        scoped<UnitOfWork> { MongoUnitOfWork(get()) } onClose {
+            it?.close()
+        }
     }
     single<UUIDGenerator> { RandomUUIDGenerator() }
 }
