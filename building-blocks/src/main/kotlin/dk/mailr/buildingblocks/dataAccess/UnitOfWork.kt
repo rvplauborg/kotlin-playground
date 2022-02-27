@@ -1,9 +1,8 @@
 package dk.mailr.buildingblocks.dataAccess
 
 import com.mongodb.client.ClientSession
-import java.io.Closeable
 
-interface UnitOfWork : Closeable {
+interface UnitOfWork : AutoCloseable {
     suspend fun inTransactionAsync(block: suspend () -> Unit)
 }
 
