@@ -6,14 +6,16 @@ import dk.mailr.auctionApplication.GetAuctionQueryAsyncHandler
 import dk.mailr.auctionApplication.StartAuctionCommandAsyncHandler
 import dk.mailr.buildingblocks.di.classToLazyProvider
 import dk.mailr.buildingblocks.di.sessionScope
+import org.koin.core.module.dsl.scopedOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val auctionModule = module {
     scope(sessionScope) {
-        scoped<AuctionRepository> { MainAuctionRepository(get(), get(), get()) }
-        scoped { CreateAuctionCommandAsyncHandler(get(), get()) }
-        scoped { GetAuctionQueryAsyncHandler(get()) }
-        scoped { StartAuctionCommandAsyncHandler(get(), get()) }
+        scopedOf(::MainAuctionRepository) bind AuctionRepository::class
+        scopedOf(::CreateAuctionCommandAsyncHandler)
+        scopedOf(::GetAuctionQueryAsyncHandler)
+        scopedOf(::StartAuctionCommandAsyncHandler)
         scoped {
             AuctionHandlers.of(
                 classToLazyProvider<CreateAuctionCommandAsyncHandler>(),
