@@ -4,11 +4,25 @@ import dk.mailr.auctionApplication.AuctionRepository
 import dk.mailr.auctionApplication.CreateAuctionCommandAsyncHandler
 import dk.mailr.auctionApplication.GetAuctionQueryAsyncHandler
 import dk.mailr.auctionApplication.StartAuctionCommandAsyncHandler
+import dk.mailr.auctionApplication.auctionRouting
 import dk.mailr.buildingblocks.di.classToLazyProvider
 import dk.mailr.buildingblocks.di.sessionScope
+import io.ktor.application.Application
+import io.ktor.routing.routing
 import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import org.koin.ktor.ext.koin
+
+fun Application.auctionModule() {
+    koin {
+        modules(auctionModule)
+    }
+
+    routing {
+        auctionRouting()
+    }
+}
 
 val auctionModule = module {
     scope(sessionScope) {

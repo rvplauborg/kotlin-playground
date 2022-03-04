@@ -70,7 +70,6 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         modules(
             coreModule(dbConnectionString),
             mediatorModule,
-            auctionModule,
         )
     }
 
@@ -78,9 +77,9 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         get("/") {
             call.respondRedirect("/ordering")
         }
-        auctionRouting()
     }
 
+    auctionModule()
     orderingModule()
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
