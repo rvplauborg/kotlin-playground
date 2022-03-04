@@ -17,6 +17,7 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
 
     override fun delete(entity: TEntity) {
         entities.remove(entity._id, entity)
+        publishedEvents.addAll(entity.domainEvents)
     }
 
     override fun findById(id: EntityId<TEntity>): TEntity? {

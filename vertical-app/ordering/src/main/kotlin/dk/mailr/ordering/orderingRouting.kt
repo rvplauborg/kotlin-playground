@@ -1,6 +1,7 @@
 package dk.mailr.ordering
 
 import dk.mailr.ordering.features.addOrderRoute
+import dk.mailr.ordering.features.deleteOrderRoute
 import dk.mailr.ordering.features.getOrdersRoute
 import io.ktor.application.call
 import io.ktor.html.respondHtml
@@ -30,5 +31,6 @@ fun Routing.orderingRouting() {
         }
         getOrdersRoute()
         addOrderRoute()
+        deleteOrderRoute()
     }
 }

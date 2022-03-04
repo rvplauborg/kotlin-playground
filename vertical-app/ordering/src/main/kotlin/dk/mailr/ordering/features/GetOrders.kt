@@ -10,12 +10,20 @@ import io.ktor.application.call
 import io.ktor.html.respondHtml
 import io.ktor.routing.Route
 import io.ktor.routing.get
+import kotlinx.html.ButtonType
+import kotlinx.html.FormMethod
+import kotlinx.html.InputType
 import kotlinx.html.a
 import kotlinx.html.body
+import kotlinx.html.button
+import kotlinx.html.form
 import kotlinx.html.h1
+import kotlinx.html.input
+import kotlinx.html.label
 import kotlinx.html.p
 import org.koin.core.component.getScopeId
 import org.koin.java.KoinJavaComponent
+import java.time.Instant
 
 fun Route.getOrdersRoute() = get("/orders") {
     val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), sessionScope)
@@ -29,7 +37,12 @@ fun Route.getOrdersRoute() = get("/orders") {
             }
             orders.orders.map {
                 p {
-                    +"Order name: ${it.name}"
+                    +"Order: ${it.name}, ${it.createdAt}"
+                }
+                form(action = "/ordering/delete-order/${it.id}", method = FormMethod.post) {
+                    button(type = ButtonType.submit) {
+                        +"Delete"
+                    }
                 }
             }
             a("/ordering") {
@@ -40,13 +53,14 @@ fun Route.getOrdersRoute() = get("/orders") {
             }
         }
     }
+    scope.close()
 }
 
 class GetOrdersQueryResponseDTO(val orders: List<GetOrderDTO>)
 
-class GetOrderDTO(val name: String)
+class GetOrderDTO(val id: String, val name: String, val createdAt: Instant)
 
-fun Order.toDTO() = GetOrderDTO(name)
+fun Order.toDTO() = GetOrderDTO(_id.value, name, createdAt)
 
 class GetOrdersQuery : Query<GetOrdersQueryResponseDTO>
 

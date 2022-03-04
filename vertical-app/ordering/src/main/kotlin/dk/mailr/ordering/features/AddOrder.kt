@@ -60,19 +60,8 @@ fun Route.addOrderRoute() {
             val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), sessionScope)
             val mediator by scope.inject<Mediator>()
             mediator.executeCommandAsync(AddOrderCommand.of(orderName))
-            call.respondRedirect("/ordering/add-order/success")
-        }
-        get("/success") {
-            call.respondHtml {
-                body {
-                    h1 {
-                        +"Added order!"
-                    }
-                    a(href = "/ordering/orders") {
-                        +"See orders"
-                    }
-                }
-            }
+            call.respondRedirect("/ordering/orders")
+            scope.close()
         }
     }
 }
