@@ -12,14 +12,11 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import kotlinx.html.ButtonType
 import kotlinx.html.FormMethod
-import kotlinx.html.InputType
 import kotlinx.html.a
 import kotlinx.html.body
 import kotlinx.html.button
 import kotlinx.html.form
 import kotlinx.html.h1
-import kotlinx.html.input
-import kotlinx.html.label
 import kotlinx.html.p
 import org.koin.core.component.getScopeId
 import org.koin.java.KoinJavaComponent
@@ -37,7 +34,7 @@ fun Route.getOrdersRoute() = get("/orders") {
             }
             orders.orders.map {
                 p {
-                    +"Order: ${it.name}, ${it.createdAt}"
+                    +"Order: ${it.createdAt}, ${it.name}"
                 }
                 form(action = "/ordering/delete-order/${it.id}", method = FormMethod.post) {
                     button(type = ButtonType.submit) {
