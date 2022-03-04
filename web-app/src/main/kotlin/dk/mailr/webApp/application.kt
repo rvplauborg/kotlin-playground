@@ -22,6 +22,8 @@ import io.ktor.request.header
 import io.ktor.request.httpMethod
 import io.ktor.request.uri
 import io.ktor.response.respond
+import io.ktor.response.respondRedirect
+import io.ktor.routing.get
 import io.ktor.routing.routing
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.koin
@@ -73,6 +75,9 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     }
 
     routing {
+        get("/") {
+            call.respondRedirect("/ordering")
+        }
         auctionRouting()
     }
 
