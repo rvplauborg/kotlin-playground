@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 internal class AddOrderCommandAsyncHandlerTest {
     private val fakeOrderRepository = spyk(FakeOrderRepository())
 
-    private val handler = AddOrderCommandAsyncHandler(fakeOrderRepository, FakeUnitOfWork())
+    private val handler = AddOrderCommandHandler(fakeOrderRepository, FakeUnitOfWork())
 
     @Test
     fun `should be possible to add order`() = runBlocking<Unit> {

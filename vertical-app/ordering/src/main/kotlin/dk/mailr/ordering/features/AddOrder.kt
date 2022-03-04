@@ -19,7 +19,6 @@ import io.ktor.routing.route
 import kotlinx.html.ButtonType
 import kotlinx.html.FormMethod
 import kotlinx.html.InputType
-import kotlinx.html.a
 import kotlinx.html.body
 import kotlinx.html.button
 import kotlinx.html.form
@@ -74,7 +73,7 @@ data class AddOrderCommand private constructor(
     }
 }
 
-class AddOrderCommandAsyncHandler(
+class AddOrderCommandHandler(
     private val orderRepository: OrderRepository,
     private val unitOfWork: UnitOfWork,
 ) : AsyncCommandHandler<AddOrderCommand> {
