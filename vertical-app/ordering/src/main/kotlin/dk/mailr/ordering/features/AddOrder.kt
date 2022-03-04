@@ -8,6 +8,7 @@ import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.domain.Order
+import dk.mailr.ordering.domain.OrderName
 import io.ktor.application.call
 import io.ktor.html.respondHtml
 import io.ktor.request.receiveParameters
@@ -66,10 +67,10 @@ fun Route.addOrderRoute() {
 }
 
 data class AddOrderCommand private constructor(
-    internal val orderName: String,
+    internal val orderName: OrderName,
 ) : Command {
     companion object {
-        fun of(orderName: String) = AddOrderCommand(orderName)
+        fun of(orderName: String) = AddOrderCommand(OrderName(orderName))
     }
 }
 

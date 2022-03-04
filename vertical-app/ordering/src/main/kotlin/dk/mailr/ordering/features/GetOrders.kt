@@ -57,7 +57,7 @@ class GetOrdersQueryResponseDTO(val orders: List<GetOrderDTO>)
 
 class GetOrderDTO(val id: String, val name: String, val createdAt: Instant)
 
-fun Order.toDTO() = GetOrderDTO(_id.value, name, createdAt)
+fun Order.toDTO() = GetOrderDTO(_id.value, name.value, createdAt)
 
 class GetOrdersQuery : Query<GetOrdersQueryResponseDTO>
 
