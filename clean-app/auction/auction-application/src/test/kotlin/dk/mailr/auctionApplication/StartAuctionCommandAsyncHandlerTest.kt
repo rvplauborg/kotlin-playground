@@ -6,7 +6,7 @@ import dk.mailr.buildingblocks.fakes.FakeUnitOfWork
 import io.kotest.matchers.collections.shouldExist
 import io.mockk.coVerify
 import io.mockk.spyk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 class StartAuctionCommandAsyncHandlerTest {
@@ -16,7 +16,7 @@ class StartAuctionCommandAsyncHandlerTest {
     private val handler = StartAuctionCommandAsyncHandler(fakeAuctionRepository, fakeUnitOfWork)
 
     @Test
-    fun `should be possible to start auction`() = runBlocking<Unit> {
+    fun `should be possible to start auction`() = runTest {
         fakeAuctionRepository.save(AuctionFixtures.simpleAuction)
 
         handler.handleAsync(StartAuctionCommand(AuctionFixtures.simpleAuction._id))

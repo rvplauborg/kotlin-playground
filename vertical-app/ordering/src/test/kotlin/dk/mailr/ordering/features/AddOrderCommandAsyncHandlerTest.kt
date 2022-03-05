@@ -7,7 +7,7 @@ import dk.mailr.ordering.domain.events.OrderCreatedEvent
 import io.kotest.matchers.collections.shouldExist
 import io.mockk.coVerify
 import io.mockk.spyk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 internal class AddOrderCommandAsyncHandlerTest {
@@ -16,7 +16,7 @@ internal class AddOrderCommandAsyncHandlerTest {
     private val handler = AddOrderCommandHandler(fakeOrderRepository, FakeUnitOfWork())
 
     @Test
-    fun `should be possible to add order`() = runBlocking<Unit> {
+    fun `should be possible to add order`() = runTest {
 
         handler.handleAsync(addOrderCommand)
 

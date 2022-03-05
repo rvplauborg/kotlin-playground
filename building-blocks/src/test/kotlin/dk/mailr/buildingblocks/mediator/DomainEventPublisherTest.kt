@@ -6,7 +6,7 @@ import dk.mailr.buildingblocks.fakes.fixture
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldHaveSingleElement
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 internal class DomainEventPublisherTest {
@@ -29,14 +29,14 @@ internal class DomainEventPublisherTest {
     }
 
     @Test
-    fun `publish should not publish anything when nothing is queued`() = runBlocking<Unit> {
+    fun `publish should not publish anything when nothing is queued`() = runTest {
         entityEventsPublisher.publishAll()
 
         fakeCommandBus.notifications.shouldBeEmpty()
     }
 
     @Test
-    fun `should publish queued events to bus on publish`() = runBlocking<Unit> {
+    fun `should publish queued events to bus on publish`() = runTest {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 
@@ -46,7 +46,7 @@ internal class DomainEventPublisherTest {
     }
 
     @Test
-    fun `should clear queued events on publish so they are not published again`() = runBlocking<Unit> {
+    fun `should clear queued events on publish so they are not published again`() = runTest {
         val (entity, domainEvent) = entityWithEvent()
         entityEventsPublisher.enqueueEventsFrom(entity)
 

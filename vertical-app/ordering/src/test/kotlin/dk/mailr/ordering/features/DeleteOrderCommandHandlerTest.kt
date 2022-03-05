@@ -10,7 +10,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldExist
 import io.mockk.coVerify
 import io.mockk.spyk
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -20,7 +20,7 @@ internal class DeleteOrderCommandHandlerTest {
     private val handler = DeleteOrderCommandHandler(fakeOrderRepository, FakeUnitOfWork())
 
     @Test
-    fun `should be possible to delete existing order`() = runBlocking<Unit> {
+    fun `should be possible to delete existing order`() = runTest {
         val entity = OrderFixtures.newOrder()
         fakeOrderRepository.save(entity)
 
@@ -31,7 +31,7 @@ internal class DeleteOrderCommandHandlerTest {
     }
 
     @Test
-    fun `should fail if no order exists`() = runBlocking<Unit> {
+    fun `should fail if no order exists`() = runTest {
         shouldThrow<NotFoundException> { handler.handleAsync(DeleteOrderCommand.of(fixture())) }
     }
 }

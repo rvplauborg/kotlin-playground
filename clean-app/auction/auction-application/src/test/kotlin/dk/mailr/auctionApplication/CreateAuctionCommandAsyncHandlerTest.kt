@@ -3,10 +3,10 @@ package dk.mailr.auctionApplication
 import dk.mailr.auctionDomain.events.AuctionCreatedEvent
 import dk.mailr.buildingblocks.fakes.FakeUnitOfWork
 import dk.mailr.buildingblocks.fakes.fixture
-import io.kotest.common.runBlocking
 import io.kotest.matchers.collections.shouldExist
 import io.mockk.coVerify
 import io.mockk.spyk
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
 class CreateAuctionCommandAsyncHandlerTest {
@@ -16,7 +16,7 @@ class CreateAuctionCommandAsyncHandlerTest {
     private val handler = CreateAuctionCommandAsyncHandler(fakeAuctionRepository, fakeUnitOfWork)
 
     @Test
-    fun `should create auction when valid input`() = runBlocking<Unit> {
+    fun `should create auction when valid input`() = runTest {
         val command = fixture<CreateAuctionCommand>()
 
         handler.handleAsync(command)

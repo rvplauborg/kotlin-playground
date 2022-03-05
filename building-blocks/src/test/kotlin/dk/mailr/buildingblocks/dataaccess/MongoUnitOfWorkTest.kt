@@ -10,7 +10,7 @@ import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.verify
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.litote.kmongo.coroutine.abortTransactionAndAwait
 import org.litote.kmongo.coroutine.commitTransactionAndAwait
@@ -35,7 +35,7 @@ internal class MongoUnitOfWorkTest {
     }
 
     @Test
-    fun handleInTransactionAsync() = runBlocking<Unit> {
+    fun handleInTransactionAsync() = runTest {
         var bool = false
 
         unitOfWork.inTransactionAsync { bool = true }
@@ -48,7 +48,7 @@ internal class MongoUnitOfWorkTest {
     }
 
     @Test
-    fun `handleInTransactionAsync should abort on error`() = runBlocking<Unit> {
+    fun `handleInTransactionAsync should abort on error`() = runTest {
         shouldThrow<IllegalArgumentException> {
             unitOfWork.inTransactionAsync { throw IllegalArgumentException() }
         }
