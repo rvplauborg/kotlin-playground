@@ -10,21 +10,21 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
     val entities = mutableMapOf<EntityId<TEntity>, TEntity>()
     val publishedEvents = mutableListOf<DomainEvent>()
 
-    override fun save(entity: TEntity): TEntity {
+    override suspend fun save(entity: TEntity): TEntity {
         entities[entity._id] = entity
         return entity
     }
 
-    override fun delete(entity: TEntity) {
+    override suspend fun delete(entity: TEntity) {
         entities.remove(entity._id, entity)
         publishedEvents.addAll(entity.domainEvents)
     }
 
-    override fun findById(id: EntityId<TEntity>): TEntity? {
+    override suspend fun findById(id: EntityId<TEntity>): TEntity? {
         return entities[id]
     }
 
-    override fun getById(id: EntityId<TEntity>): TEntity {
+    override suspend fun getById(id: EntityId<TEntity>): TEntity {
         return entities[id] ?: throw NotFoundException("Entity with id $id does not exist")
     }
 
@@ -33,7 +33,7 @@ open class FakeRepository<TEntity : DomainEntity<TEntity>> : EntityRepository<TE
         entities.forEach { it.value.clearDomainEvents() }
     }
 
-    override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
+    override suspend fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
         return entities.values.filter { it._id in ids }
     }
 }

@@ -6,7 +6,8 @@ plugins {
 dependencies {
     val kediatrVersion: String by project
     api("com.trendyol:kediatr-core:$kediatrVersion")
-    api("org.litote.kmongo:kmongo:4.4.0")
+    val kmongoVersion: String by project
+    api("org.litote.kmongo:kmongo-coroutine:$kmongoVersion")
     val koinVersion: String by project
     api("io.insert-koin:koin-core:$koinVersion")
 

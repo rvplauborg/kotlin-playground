@@ -1,26 +1,23 @@
 package dk.mailr.buildingblocks.dataAccess
 
-import com.mongodb.client.ClientSession
-import com.mongodb.client.MongoCollection
+import com.mongodb.reactivestreams.client.ClientSession
 import dk.mailr.buildingblocks.domain.DomainEntity
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.exceptions.NotFoundException
 import dk.mailr.buildingblocks.mediator.EventPublisher
-import org.litote.kmongo.deleteOneById
-import org.litote.kmongo.findOneById
+import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.`in`
-import org.litote.kmongo.save
 
 interface EntityRepository<TEntity : DomainEntity<TEntity>> {
-    fun findById(id: EntityId<TEntity>): TEntity?
+    suspend fun findById(id: EntityId<TEntity>): TEntity?
 
-    fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity>
+    suspend fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity>
 
-    fun getById(id: EntityId<TEntity>): TEntity
+    suspend fun getById(id: EntityId<TEntity>): TEntity
 
-    fun save(entity: TEntity): TEntity
+    suspend fun save(entity: TEntity): TEntity
 
-    fun delete(entity: TEntity)
+    suspend fun delete(entity: TEntity)
 
     suspend fun notifyAll()
 }
@@ -29,27 +26,27 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
     private val eventsPublisher: EventPublisher,
     private val clientSession: ClientSession,
 ) : EntityRepository<TEntity> {
-    abstract val mongoCollection: MongoCollection<TEntity>
+    abstract val mongoCollection: CoroutineCollection<TEntity>
 
-    override fun findById(id: EntityId<TEntity>): TEntity? {
-        return mongoCollection.findOneById(clientSession, id)
+    override suspend fun findById(id: EntityId<TEntity>): TEntity? {
+        return mongoCollection.findOneById(id, clientSession)
     }
 
-    override fun getById(id: EntityId<TEntity>): TEntity {
-        return mongoCollection.findOneById(clientSession, id) ?: throw NotFoundException("Entity $id does not exist")
+    override suspend fun getById(id: EntityId<TEntity>): TEntity {
+        return mongoCollection.findOneById(id, clientSession) ?: throw NotFoundException("Entity $id does not exist")
     }
 
-    override fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
+    override suspend fun findByIds(ids: List<EntityId<TEntity>>): List<TEntity> {
         return mongoCollection.find(clientSession, DomainEntity<TEntity>::_id `in` ids).toList()
     }
 
-    override fun save(entity: TEntity): TEntity {
-        mongoCollection.save(clientSession, entity)
+    override suspend fun save(entity: TEntity): TEntity {
+        mongoCollection.save(entity) // TODO should use client session, see https://github.com/Litote/kmongo/issues/327
         eventsPublisher.enqueueEventsFrom(entity)
         return entity
     }
 
-    override fun delete(entity: TEntity) {
+    override suspend fun delete(entity: TEntity) {
         mongoCollection.deleteOneById(clientSession, entity._id)
         eventsPublisher.enqueueEventsFrom(entity)
     }

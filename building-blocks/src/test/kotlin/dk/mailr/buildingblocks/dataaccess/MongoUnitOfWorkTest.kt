@@ -1,6 +1,6 @@
 package dk.mailr.buildingblocks.dataaccess
 
-import com.mongodb.client.ClientSession
+import com.mongodb.reactivestreams.client.ClientSession
 import dk.mailr.buildingblocks.dataAccess.MongoUnitOfWork
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.booleans.shouldBeTrue

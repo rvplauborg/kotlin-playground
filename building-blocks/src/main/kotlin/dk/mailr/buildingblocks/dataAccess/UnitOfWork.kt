@@ -1,6 +1,8 @@
 package dk.mailr.buildingblocks.dataAccess
 
-import com.mongodb.client.ClientSession
+import com.mongodb.reactivestreams.client.ClientSession
+import org.litote.kmongo.coroutine.abortTransactionAndAwait
+import org.litote.kmongo.coroutine.commitTransactionAndAwait
 
 interface UnitOfWork : AutoCloseable {
     suspend fun inTransactionAsync(block: suspend () -> Unit)
@@ -12,9 +14,9 @@ open class MongoUnitOfWork(private val session: ClientSession) : UnitOfWork {
         try {
             session.startTransaction()
             block()
-            session.commitTransaction()
+            session.commitTransactionAndAwait()
         } catch (e: Exception) {
-            session.abortTransaction()
+            session.abortTransactionAndAwait()
             throw e
         }
     }
