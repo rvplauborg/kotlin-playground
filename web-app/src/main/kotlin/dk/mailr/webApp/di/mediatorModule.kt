@@ -11,6 +11,8 @@ import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.OrderHandlers
 import org.koin.dsl.module
 
+// TODO: rplauborg 05/03/2022 If we could somehow modularize the mediator DI setup, so we could have API tests in each module,
+//  so they only spin up their part of the application, that would be great.
 val mediatorModule = module {
     scope(sessionScope) {
         scoped {
