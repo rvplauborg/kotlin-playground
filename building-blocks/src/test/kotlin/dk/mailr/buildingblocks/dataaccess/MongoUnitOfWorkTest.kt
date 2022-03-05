@@ -4,14 +4,26 @@ import com.mongodb.reactivestreams.client.ClientSession
 import dk.mailr.buildingblocks.dataAccess.MongoUnitOfWork
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.verify
-import io.mockk.verifyOrder
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
+import org.litote.kmongo.coroutine.abortTransactionAndAwait
+import org.litote.kmongo.coroutine.commitTransactionAndAwait
 
 internal class MongoUnitOfWorkTest {
-    private val mockClientSession = mockk<ClientSession>(relaxed = true)
+    init {
+        mockkStatic("org.litote.kmongo.coroutine.CoroutineClientSessionsKt") // ensuring extension functions are mocked
+    }
+
+    private val mockClientSession = mockk<ClientSession>(relaxed = true) {
+        coEvery { this@mockk.commitTransactionAndAwait() } returns Unit
+        coEvery { this@mockk.abortTransactionAndAwait() } returns Unit
+    }
 
     private val unitOfWork = MongoUnitOfWork(mockClientSession)
 
@@ -29,9 +41,9 @@ internal class MongoUnitOfWorkTest {
         unitOfWork.inTransactionAsync { bool = true }
 
         bool.shouldBeTrue()
-        verifyOrder {
+        coVerify {
             mockClientSession.startTransaction()
-            mockClientSession.commitTransaction()
+            mockClientSession.commitTransactionAndAwait()
         }
     }
 
@@ -41,9 +53,9 @@ internal class MongoUnitOfWorkTest {
             unitOfWork.inTransactionAsync { throw IllegalArgumentException() }
         }
 
-        verifyOrder {
+        coVerifyOrder {
             mockClientSession.startTransaction()
-            mockClientSession.abortTransaction()
+            mockClientSession.abortTransactionAndAwait()
         }
     }
 }

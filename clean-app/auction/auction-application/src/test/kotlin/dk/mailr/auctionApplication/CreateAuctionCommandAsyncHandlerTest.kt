@@ -7,7 +7,6 @@ import io.kotest.common.runBlocking
 import io.kotest.matchers.collections.shouldExist
 import io.mockk.coVerify
 import io.mockk.spyk
-import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 class CreateAuctionCommandAsyncHandlerTest {
@@ -23,7 +22,7 @@ class CreateAuctionCommandAsyncHandlerTest {
         handler.handleAsync(command)
 
         fakeAuctionRepository.publishedEvents shouldExist { it is AuctionCreatedEvent }
-        verify { fakeAuctionRepository.save(any()) }
+        coVerify { fakeAuctionRepository.save(any()) }
         coVerify { fakeUnitOfWork.inTransactionAsync(any()) }
     }
 }

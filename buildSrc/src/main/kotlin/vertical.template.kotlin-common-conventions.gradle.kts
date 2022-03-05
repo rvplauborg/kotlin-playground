@@ -56,6 +56,10 @@ tasks {
     compileKotlin {
         kotlinOptions.allWarningsAsErrors = true
         kotlinOptions.jvmTarget = JavaLanguageVersion.of("17").toString()
+        kotlinOptions.freeCompilerArgs += listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        )
     }
     koverCollectReports {
         outputDir.set(rootProject.layout.buildDirectory.dir("my-reports"))

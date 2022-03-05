@@ -1,7 +1,6 @@
 package dk.mailr.buildingblocks
 
-import com.mongodb.client.ClientSession
-import com.mongodb.client.MongoDatabase
+import com.mongodb.reactivestreams.client.ClientSession
 import dk.mailr.buildingblocks.dataAccess.MongoEntityRepository
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.exceptions.NotFoundException
@@ -20,12 +19,12 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
-import org.litote.kmongo.getCollection
+import org.litote.kmongo.coroutine.CoroutineDatabase
 import java.util.UUID
 
 class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     internal class RepositoryForTest(
-        mongoDatabase: MongoDatabase,
+        mongoDatabase: CoroutineDatabase,
         eventsPublisher: EventPublisher,
         clientSession: ClientSession,
     ) : MongoEntityRepository<TestEntity>(eventsPublisher, clientSession) {
@@ -33,10 +32,10 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     private val mediator = FakeMediator()
-    private val entityRepository = RepositoryForTest(mongoDatabase, DomainEventPublisher(mediator), mongoClient.startSession())
+    private val entityRepository = RepositoryForTest(mongoDatabase, DomainEventPublisher(mediator), runBlocking { mongoClient.startSession() })
 
     @Test
-    fun `should be possible to add an entity`() {
+    fun `should be possible to add an entity`() = runBlocking<Unit> {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
 
         entityRepository.save(entityToSave)
@@ -46,13 +45,13 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should error when attempting to read entity which does not exist`() {
+    fun `should error when attempting to read entity which does not exist`() = runBlocking<Unit> {
         val randomId = EntityId<TestEntity>(UUID.randomUUID())
         shouldThrow<NotFoundException> { entityRepository.getById(randomId) }
     }
 
     @Test
-    fun `should return null when attempting to find entity which does not exist`() {
+    fun `should return null when attempting to find entity which does not exist`() = runBlocking<Unit> {
         val randomId = EntityId<TestEntity>(UUID.randomUUID())
 
         val entity = entityRepository.findById(randomId)
@@ -61,7 +60,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should return entity when attempting to find entity which exists`() {
+    fun `should return entity when attempting to find entity which exists`() = runBlocking<Unit> {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
         val savedEntity = entityRepository.save(entityToSave)
 
@@ -71,7 +70,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should return empty list if no entities with given id when attempting to find by ids`() {
+    fun `should return empty list if no entities with given id when attempting to find by ids`() = runBlocking<Unit> {
         val ids = fixture<List<EntityId<TestEntity>>>()
 
         val entities = entityRepository.findByIds(ids)
@@ -80,7 +79,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should return matching entities when attempting to find by ids`() {
+    fun `should return matching entities when attempting to find by ids`() = runBlocking<Unit> {
         val entitiesToSave = fixture<List<TestEntity>>()
         val idsForNonExistingEntities = fixture<List<EntityId<TestEntity>>>()
         entitiesToSave.forEach { entityRepository.save(it) }
@@ -92,7 +91,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should be possible to update an existing entity`() {
+    fun `should be possible to update an existing entity`() = runBlocking<Unit> {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
         var savedEntity = entityRepository.save(entityToSave)
 
@@ -103,7 +102,7 @@ class MongoEntityRepositoryTest : BaseEntityRepositoryTest() {
     }
 
     @Test
-    fun `should be possible to delete an existing entity`() {
+    fun `should be possible to delete an existing entity`() = runBlocking<Unit> {
         val entityToSave = TestEntity(EntityId(UUID.randomUUID()))
         val savedEntity = entityRepository.save(entityToSave)
 

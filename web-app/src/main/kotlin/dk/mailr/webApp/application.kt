@@ -1,6 +1,5 @@
 package dk.mailr.webApp
 
-import dk.mailr.auctionApplication.auctionRouting
 import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.ordering.orderingModule

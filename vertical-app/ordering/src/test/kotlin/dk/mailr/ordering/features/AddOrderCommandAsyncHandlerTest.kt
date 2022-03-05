@@ -5,8 +5,8 @@ import dk.mailr.ordering.FakeOrderRepository
 import dk.mailr.ordering.OrderFixtures.Commands.addOrderCommand
 import dk.mailr.ordering.domain.events.OrderCreatedEvent
 import io.kotest.matchers.collections.shouldExist
+import io.mockk.coVerify
 import io.mockk.spyk
-import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -20,7 +20,7 @@ internal class AddOrderCommandAsyncHandlerTest {
 
         handler.handleAsync(addOrderCommand)
 
-        verify { fakeOrderRepository.save(any()) }
+        coVerify { fakeOrderRepository.save(any()) }
         fakeOrderRepository.publishedEvents shouldExist { it is OrderCreatedEvent }
     }
 }
