@@ -24,7 +24,7 @@ internal class DeleteOrderCommandHandlerTest {
         val entity = OrderFixtures.newOrder()
         fakeOrderRepository.save(entity)
 
-        handler.handleAsync(DeleteOrderCommand.of(UUID.fromString(entity._id.value)))
+        handler.handleAsync(DeleteOrderCommand.of(entity._id.valueAsUUID()))
 
         coVerify { fakeOrderRepository.save(any()) }
         fakeOrderRepository.publishedEvents shouldExist { it is OrderDeletedEvent }
