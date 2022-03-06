@@ -15,7 +15,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 fun coreModule(dbConnectionString: String) = module {
     single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
     single { get<CoroutineClient>().getDatabase("vertical-template-db") }
-    scope(sessionScope) {
+    scope(requestScope) {
         scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
             it?.close()
         }

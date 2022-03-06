@@ -3,7 +3,7 @@ package dk.mailr.ordering.features
 import com.trendyol.kediatr.AsyncCommandHandler
 import com.trendyol.kediatr.Command
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.dataAccess.OrderRepository
@@ -57,7 +57,7 @@ fun Route.addOrderRoute() {
         }
         post {
             val orderName = call.receiveParameters()["order-name"] ?: throw IllegalArgumentException("No order name given")
-            val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), sessionScope)
+            val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
             val mediator by scope.inject<Mediator>()
             mediator.executeCommandAsync(AddOrderCommand.of(orderName))
             call.respondRedirect("/ordering/orders")

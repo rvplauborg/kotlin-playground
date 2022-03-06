@@ -5,7 +5,7 @@ import com.trendyol.kediatr.Command
 import dk.mailr.auctionDomain.Auction
 import dk.mailr.auctionDomain.AuctionName
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
@@ -23,7 +23,7 @@ import java.util.UUID
 fun Route.createAuctionRoute() {
     val uuidGenerator by inject<UUIDGenerator>()
     post("/create-auction") {
-        val scope = getKoin().createScope(context.request.getScopeId(), sessionScope)
+        val scope = getKoin().createScope(context.request.getScopeId(), requestScope)
         val mediator by scope.inject<Mediator>()
 
         val request = call.receive<CreateAuctionRequest>()

@@ -1,7 +1,7 @@
 package dk.mailr.ordering
 
 import dk.mailr.buildingblocks.di.classToLazyProvider
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.ordering.dataAccess.MainOrderRepository
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.features.AddOrderCommandHandler
@@ -25,7 +25,7 @@ fun Application.orderingModule() {
 }
 
 val orderingModule = module {
-    scope(sessionScope) {
+    scope(requestScope) {
         scopedOf(::MainOrderRepository) bind OrderRepository::class
         scopedOf(::GetOrdersQueryHandler)
         scopedOf(::AddOrderCommandHandler)

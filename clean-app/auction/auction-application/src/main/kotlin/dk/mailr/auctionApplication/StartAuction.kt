@@ -4,7 +4,7 @@ import com.trendyol.kediatr.AsyncCommandHandler
 import com.trendyol.kediatr.Command
 import dk.mailr.auctionDomain.Auction
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
 import io.ktor.application.call
@@ -19,7 +19,7 @@ import java.util.UUID
 
 fun Route.startAuctionRoute() {
     post("/start-auction") {
-        val scope = getKoin().createScope(context.request.getScopeId(), sessionScope)
+        val scope = getKoin().createScope(context.request.getScopeId(), requestScope)
         val mediator by scope.inject<Mediator>()
 
         val request = call.receive<StartAuctionRequest>()

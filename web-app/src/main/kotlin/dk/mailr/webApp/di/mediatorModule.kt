@@ -2,7 +2,7 @@ package dk.mailr.webApp.di
 
 import com.trendyol.kediatr.CommandBusBuilder
 import dk.mailr.auctionInfrastructure.AuctionHandlers
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.mediator.DomainEventPublisher
 import dk.mailr.buildingblocks.mediator.EventPublisher
 import dk.mailr.buildingblocks.mediator.MainMediator
@@ -14,7 +14,7 @@ import org.koin.dsl.module
 // TODO: rplauborg 05/03/2022 If we could somehow modularize the mediator DI setup, so we could have API tests in each module,
 //  so they only spin up their part of the application, that would be great.
 val mediatorModule = module {
-    scope(sessionScope) {
+    scope(requestScope) {
         scoped {
             CommandBusBuilder(
                 ManualDependencyProvider(get<AuctionHandlers>().map + get<OrderHandlers>().map)

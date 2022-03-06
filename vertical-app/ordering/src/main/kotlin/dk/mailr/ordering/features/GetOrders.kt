@@ -2,7 +2,7 @@ package dk.mailr.ordering.features
 
 import com.trendyol.kediatr.AsyncQueryHandler
 import com.trendyol.kediatr.Query
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.domain.Order
@@ -23,7 +23,7 @@ import org.koin.java.KoinJavaComponent
 import java.time.Instant
 
 fun Route.getOrdersRoute() = get("/orders") {
-    val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), sessionScope)
+    val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
     val mediator by scope.inject<Mediator>()
 
     val orders = mediator.executeQueryAsync(GetOrdersQuery())

@@ -3,7 +3,7 @@ package dk.mailr.ordering.features
 import com.trendyol.kediatr.AsyncCommandHandler
 import com.trendyol.kediatr.Command
 import dk.mailr.buildingblocks.dataAccess.UnitOfWork
-import dk.mailr.buildingblocks.di.sessionScope
+import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.dataAccess.OrderRepository
@@ -19,7 +19,7 @@ import java.util.UUID
 fun Route.deleteOrderRoute() {
     post("/delete-order/{id}") {
         val id = call.parameters["id"] ?: throw IllegalArgumentException("No id given")
-        val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), sessionScope)
+        val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
         val mediator by scope.inject<Mediator>()
         mediator.executeCommandAsync(DeleteOrderCommand.of(UUID.fromString(id)))
         call.respondRedirect("/ordering/orders")
