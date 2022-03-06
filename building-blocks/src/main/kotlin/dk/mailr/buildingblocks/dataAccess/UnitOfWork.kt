@@ -4,7 +4,7 @@ import com.mongodb.reactivestreams.client.ClientSession
 import org.litote.kmongo.coroutine.abortTransactionAndAwait
 import org.litote.kmongo.coroutine.commitTransactionAndAwait
 
-interface UnitOfWork : AutoCloseable {
+interface UnitOfWork {
     suspend fun inTransactionAsync(block: suspend () -> Unit)
 }
 
@@ -19,9 +19,5 @@ open class MongoUnitOfWork(private val session: ClientSession) : UnitOfWork {
             session.abortTransactionAndAwait()
             throw e
         }
-    }
-
-    override fun close() {
-        session.close()
     }
 }

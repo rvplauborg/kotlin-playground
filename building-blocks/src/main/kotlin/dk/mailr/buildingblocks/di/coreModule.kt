@@ -16,10 +16,10 @@ fun coreModule(dbConnectionString: String) = module {
     single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
     single { get<CoroutineClient>().getDatabase("vertical-template-db") }
     scope(sessionScope) {
-        scoped { runBlocking { get<CoroutineClient>().startSession() } }
-        scoped<UnitOfWork> { MongoUnitOfWork(get()) } onClose {
+        scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
             it?.close()
         }
+        scoped<UnitOfWork> { MongoUnitOfWork(get()) }
     }
     single<UUIDGenerator> { RandomUUIDGenerator() }
 }
