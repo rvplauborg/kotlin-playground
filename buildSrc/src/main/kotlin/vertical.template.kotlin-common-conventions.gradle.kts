@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 group = "dk.mailr"
 
 plugins {
@@ -53,7 +55,7 @@ tasks {
     test {
         useJUnitPlatform() // use JUnit 5, see https://kotlinlang.org/docs/gradle.html#set-dependencies-on-test-libraries
     }
-    compileKotlin {
+    withType<KotlinCompile> {
         kotlinOptions.allWarningsAsErrors = true
         kotlinOptions.jvmTarget = JavaLanguageVersion.of("17").toString()
         kotlinOptions.freeCompilerArgs += listOf(
@@ -72,7 +74,8 @@ detekt {
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom")) // use same version of kotlin library versions
+    val kotlinVersion: String by project
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion")) // use same version of kotlin library versions
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
     val valiktorVersion: String by project
