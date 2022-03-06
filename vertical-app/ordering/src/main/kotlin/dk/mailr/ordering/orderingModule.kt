@@ -1,6 +1,7 @@
 package dk.mailr.ordering
 
 import dk.mailr.buildingblocks.di.classToLazyProvider
+import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.ordering.dataAccess.MainOrderRepository
 import dk.mailr.ordering.dataAccess.OrderRepository
@@ -14,9 +15,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.ktor.ext.koin
 
-fun Application.orderingModule() {
+fun Application.orderingModule(dbConnectionString: String) {
     koin {
-        modules(orderingModule)
+        modules(orderingKoinModule(dbConnectionString))
     }
 
     routing {
@@ -24,7 +25,8 @@ fun Application.orderingModule() {
     }
 }
 
-val orderingModule = module {
+fun orderingKoinModule(dbConnectionString: String) = module {
+    includes(coreModule(dbConnectionString))
     scope(requestScope) {
         scopedOf(::MainOrderRepository) bind OrderRepository::class
         scopedOf(::GetOrdersQueryHandler)

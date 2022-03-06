@@ -1,7 +1,6 @@
 package dk.mailr.webApp
 
 import dk.mailr.auctionInfrastructure.auctionModule
-import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
@@ -67,7 +66,6 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     koin {
         slf4jLogger(Level.ERROR) // Must be ERROR until https://github.com/InsertKoinIO/koin/issues/1188 is fixed
         modules(
-            coreModule(dbConnectionString),
             mediatorModule,
         )
     }
@@ -78,8 +76,8 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         }
     }
 
-    auctionModule()
-    orderingModule()
+    auctionModule(dbConnectionString)
+    orderingModule(dbConnectionString)
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()
