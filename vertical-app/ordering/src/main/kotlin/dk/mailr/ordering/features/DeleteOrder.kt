@@ -13,18 +13,16 @@ import io.ktor.response.respondRedirect
 import io.ktor.routing.Route
 import io.ktor.routing.post
 import org.koin.core.component.getScopeId
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.getKoin
 import java.util.UUID
 
-fun Route.deleteOrderRoute() {
-    post("/delete-order/{id}") {
-        val id = call.parameters["id"] ?: throw IllegalArgumentException("No id given")
-        val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
-        val mediator by scope.inject<Mediator>()
-        mediator.executeCommandAsync(DeleteOrderCommand.of(UUID.fromString(id)))
-        call.respondRedirect("/ordering/orders")
-        scope.close()
-    }
+fun Route.deleteOrderRoute() = post("/delete-order/{id}") {
+    val id = call.parameters["id"] ?: throw IllegalArgumentException("No id given")
+    val scope = getKoin().createScope(context.request.getScopeId(), requestScope)
+    val mediator by scope.inject<Mediator>()
+    mediator.executeCommandAsync(DeleteOrderCommand.of(UUID.fromString(id)))
+    call.respondRedirect("/ordering/orders")
+    scope.close()
 }
 
 data class DeleteOrderCommand private constructor(val id: EntityId<Order>) : Command {

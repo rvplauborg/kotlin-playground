@@ -1,5 +1,13 @@
 package dk.mailr.webApp
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.jacksonMapperBuilder
+import com.fasterxml.jackson.module.kotlin.kotlinModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dk.mailr.auctionInfrastructure.auctionModule
 import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
@@ -26,6 +34,7 @@ import io.ktor.routing.routing
 import org.koin.core.logger.Level
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
+import org.litote.kmongo.id.jackson.IdJacksonModule
 import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -60,7 +69,10 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         }
     }
     install(ContentNegotiation) {
-        jackson()
+        jackson {
+            this.
+            registerModule(JavaTimeModule())
+        }
     }
 
     koin {
@@ -72,7 +84,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
 
     routing {
         get("/") {
-            call.respondRedirect("/ordering")
+            call.respondRedirect("/ordering/orders")
         }
     }
 

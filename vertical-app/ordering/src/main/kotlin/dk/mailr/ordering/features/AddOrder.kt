@@ -6,73 +6,39 @@ import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 import dk.mailr.buildingblocks.di.requestScope
 import dk.mailr.buildingblocks.domain.EntityId
 import dk.mailr.buildingblocks.mediator.Mediator
+import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.domain.Order
 import dk.mailr.ordering.domain.OrderName
 import io.ktor.application.call
-import io.ktor.html.respondHtml
 import io.ktor.request.receive
-import io.ktor.response.respondRedirect
+import io.ktor.response.respond
 import io.ktor.routing.Route
-import io.ktor.routing.get
 import io.ktor.routing.post
-import io.ktor.routing.route
-import kotlinx.html.ButtonType
-import kotlinx.html.FormMethod
-import kotlinx.html.InputType
-import kotlinx.html.body
-import kotlinx.html.button
-import kotlinx.html.form
-import kotlinx.html.h1
-import kotlinx.html.input
-import kotlinx.html.label
 import org.koin.core.component.getScopeId
-import org.koin.java.KoinJavaComponent
+import org.koin.java.KoinJavaComponent.getKoin
+import org.koin.ktor.ext.inject
 import java.util.UUID
 
 data class AddOrderRequest(val orderName: String)
 
-fun Route.addOrderRoute() {
-    route("/add-order") {
-        get {
-            call.respondHtml {
-                body {
-                    h1 {
-                        +"Add order"
-                    }
-
-                    form(action = "/ordering/add-order", method = FormMethod.post) {
-
-                        input(type = InputType.text, name = "order-name") {
-                            placeholder = "Order name"
-                            label {
-                                +"Order name"
-                            }
-                        }
-
-                        button(type = ButtonType.submit) {
-                            +"Add"
-                        }
-                    }
-                }
-            }
-        }
-        post {
-            val request = call.receive<AddOrderRequest>()
-            val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
-            val mediator by scope.inject<Mediator>()
-            mediator.executeCommandAsync(AddOrderCommand.of(request.orderName))
-            call.respondRedirect("/ordering/orders")
-            scope.close()
-        }
-    }
+fun Route.addOrderRoute() = post("/add-order") {
+    val request = call.receive<AddOrderRequest>()
+    val scope = getKoin().createScope(context.request.getScopeId(), requestScope)
+    val mediator by scope.inject<Mediator>()
+    val uuidGenerator by call.inject<UUIDGenerator>()
+    val id = uuidGenerator.generate()
+    mediator.executeCommandAsync(AddOrderCommand.of(id, request.orderName))
+    call.respond(id)
+    scope.close()
 }
 
 data class AddOrderCommand private constructor(
+    internal val orderId: EntityId<Order>,
     internal val orderName: OrderName,
 ) : Command {
     companion object {
-        fun of(orderName: String) = AddOrderCommand(OrderName(orderName))
+        fun of(id: UUID, orderName: String) = AddOrderCommand(EntityId(id), OrderName(orderName))
     }
 }
 
@@ -82,7 +48,7 @@ class AddOrderCommandHandler(
 ) : AsyncCommandHandler<AddOrderCommand> {
     override suspend fun handleAsync(command: AddOrderCommand) {
         unitOfWork.inTransactionAsync {
-            val order = Order.create(EntityId(UUID.randomUUID()), command.orderName)
+            val order = Order.create(command.orderId, command.orderName)
             orderRepository.save(order)
             orderRepository.notifyAll()
         }

@@ -20,6 +20,7 @@ dependencies {
     val logbackVersion: String by project
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     val koinVersion: String by project
     implementation("io.insert-koin:koin-ktor:$koinVersion")

@@ -9,7 +9,7 @@ object OrderFixtures {
     fun newOrder() = Order.create(fixture(), fixture())
 
     object Commands {
-        val addOrderCommand = AddOrderCommand.of(fixture())
+        val addOrderCommand = AddOrderCommand.of(uuidGenerator.generate(), fixture())
     }
 
     object Queries {
