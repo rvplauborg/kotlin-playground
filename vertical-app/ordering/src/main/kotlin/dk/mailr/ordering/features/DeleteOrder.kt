@@ -9,7 +9,8 @@ import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.domain.Order
 import io.ktor.application.call
-import io.ktor.response.respondRedirect
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.post
 import org.koin.core.component.getScopeId
@@ -21,7 +22,7 @@ fun Route.deleteOrderRoute() = post("/delete-order/{id}") {
     val scope = getKoin().createScope(context.request.getScopeId(), requestScope)
     val mediator by scope.inject<Mediator>()
     mediator.executeCommandAsync(DeleteOrderCommand.of(UUID.fromString(id)))
-    call.respondRedirect("/ordering/orders")
+    call.respond(HttpStatusCode.OK, "Deleted")
     scope.close()
 }
 

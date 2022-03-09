@@ -64,8 +64,17 @@ fun FrontPage(httpClient: HttpClient) {
         }
 
         orders.map {
-            Text(it.name)
-            Text(it.createdAt.toString())
+            Row {
+                Text(it.name)
+                Text(it.createdAt.toString())
+                Button(onClick = {
+                    coroutineScope.launch {
+                        httpClient.post("http://localhost:8080/ordering/delete-order/${it.id}")
+                    }
+                }) {
+                    Text("Delete")
+                }
+            }
         }
     }
 }
