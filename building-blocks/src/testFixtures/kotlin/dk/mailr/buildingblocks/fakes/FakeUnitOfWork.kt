@@ -6,8 +6,4 @@ class FakeUnitOfWork : UnitOfWork {
     override suspend fun inTransactionAsync(block: suspend () -> Unit) {
         block()
     }
-
-    override fun close() {
-        // do nothing
-    }
 }
