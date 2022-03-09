@@ -64,7 +64,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     }
 
     koin {
-        slf4jLogger(Level.ERROR) // Must be ERROR until https://github.com/InsertKoinIO/koin/issues/1188 is fixed
+        slf4jLogger()
         modules(
             mediatorModule,
         )
