@@ -1,10 +1,9 @@
-package dk.mailr.webApp.auction
+package dk.mailr.webApp.ordering.features;
 
-import dk.mailr.auctionApplication.StartAuctionRequest
+import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.buildingblocks.json.jsonMapper
-import dk.mailr.webApp.TestContainerSetup
+import dk.mailr.ordering.features.AddOrderRequest
 import dk.mailr.webApp.apiTestModule
-import dk.mailr.webApp.module
 import io.kotest.matchers.shouldBe
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -13,18 +12,17 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
 import io.ktor.server.testing.withTestApplication
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
-class StartAuctionApiTest {
+class AddOrderRouteTest {
     @Test
-    fun `should be possible to create auction`() {
+    fun `it should be possible to add an order`() {
         withTestApplication({ apiTestModule() }) {
-            val auctionId = createAuction()
-            with(handleRequest(HttpMethod.Post, "/auction/start-auction") {
+            with(handleRequest(HttpMethod.Post, "/ordering/add-order") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                setBody(jsonMapper.writeValueAsString(StartAuctionRequest(auctionId)))
+                setBody(jsonMapper.writeValueAsString(fixture<AddOrderRequest>()))
             }) {
-                response.status() shouldBe HttpStatusCode.OK
+                response.status() shouldBe HttpStatusCode.Found
             }
         }
     }

@@ -11,7 +11,7 @@ import dk.mailr.ordering.domain.Order
 import dk.mailr.ordering.domain.OrderName
 import io.ktor.application.call
 import io.ktor.html.respondHtml
-import io.ktor.request.receiveParameters
+import io.ktor.request.receive
 import io.ktor.response.respondRedirect
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -29,6 +29,8 @@ import kotlinx.html.label
 import org.koin.core.component.getScopeId
 import org.koin.java.KoinJavaComponent
 import java.util.UUID
+
+data class AddOrderRequest(val orderName: String)
 
 fun Route.addOrderRoute() {
     route("/add-order") {
@@ -56,10 +58,10 @@ fun Route.addOrderRoute() {
             }
         }
         post {
-            val orderName = call.receiveParameters()["order-name"] ?: throw IllegalArgumentException("No order name given")
+            val request = call.receive<AddOrderRequest>()
             val scope = KoinJavaComponent.getKoin().createScope(context.request.getScopeId(), requestScope)
             val mediator by scope.inject<Mediator>()
-            mediator.executeCommandAsync(AddOrderCommand.of(orderName))
+            mediator.executeCommandAsync(AddOrderCommand.of(request.orderName))
             call.respondRedirect("/ordering/orders")
             scope.close()
         }
