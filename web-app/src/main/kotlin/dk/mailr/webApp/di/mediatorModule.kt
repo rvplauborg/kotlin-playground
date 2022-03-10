@@ -15,7 +15,7 @@ import org.koin.dsl.module
 
 // TODO: rplauborg 05/03/2022 If we could somehow modularize the mediator DI setup, so we could have API tests in each module,
 //  so they only spin up their part of the application, that would be great.
-fun mediatorModule(mediator: Mediator?) = module {
+fun mediatorModule(mediator: Mediator? = null) = module {
     scope(requestScope) {
         scoped {
             CommandBusBuilder(

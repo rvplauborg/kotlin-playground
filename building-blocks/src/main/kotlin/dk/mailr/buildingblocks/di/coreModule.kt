@@ -15,14 +15,16 @@ import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
-fun coreModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?): Module = module {
-    single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
-    single { get<CoroutineClient>().getDatabase("vertical-template-db") }
-    scope(requestScope) {
-        scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
-            it?.close()
+fun coreModule(dbConnectionString: String?, uuidGenerator: UUIDGenerator?): Module = module {
+    if (dbConnectionString != null) {
+        single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
+        single { get<CoroutineClient>().getDatabase("vertical-template-db") }
+        scope(requestScope) {
+            scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
+                it?.close()
+            }
+            scopedOf(::MongoUnitOfWork) bind UnitOfWork::class
         }
-        scopedOf(::MongoUnitOfWork) bind UnitOfWork::class
     }
     single { uuidGenerator ?: RandomUUIDGenerator() }
 }

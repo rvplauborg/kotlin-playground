@@ -2,8 +2,6 @@ package dk.mailr.webApp
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import dk.mailr.auctionInfrastructure.auctionModule
-import dk.mailr.buildingblocks.mediator.Mediator
-import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
@@ -34,8 +32,6 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(
     dbConnectionString: String = environment.config.property("mongodb.uri").getString(),
-    mediator: Mediator? = null,
-    uuidGenerator: UUIDGenerator? = null,
 ) {
     install(CallId) {
         // Tries to retrieve a callId from an ApplicationCall.
@@ -74,7 +70,7 @@ fun Application.module(
     koin {
         slf4jLogger()
         modules(
-            mediatorModule(mediator),
+            mediatorModule(),
         )
     }
 
@@ -84,8 +80,8 @@ fun Application.module(
         }
     }
 
-    auctionModule(dbConnectionString, uuidGenerator)
-    orderingModule(dbConnectionString, uuidGenerator)
+    auctionModule(dbConnectionString = dbConnectionString)
+    orderingModule(dbConnectionString = dbConnectionString)
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()

@@ -16,7 +16,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.ktor.ext.koin
 
-fun Application.auctionModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) {
+fun Application.auctionModule(dbConnectionString: String? = null, uuidGenerator: UUIDGenerator? = null) {
     koin {
         modules(auctionKoinModule(dbConnectionString, uuidGenerator))
     }
@@ -26,7 +26,7 @@ fun Application.auctionModule(dbConnectionString: String, uuidGenerator: UUIDGen
     }
 }
 
-fun auctionKoinModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) = module {
+fun auctionKoinModule(dbConnectionString: String?, uuidGenerator: UUIDGenerator?) = module {
     includes(coreModule(dbConnectionString, uuidGenerator))
     scope(requestScope) {
         scopedOf(::MainAuctionRepository) bind AuctionRepository::class

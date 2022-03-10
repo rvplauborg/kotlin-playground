@@ -18,7 +18,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.ktor.ext.koin
 
-fun Application.orderingModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) {
+fun Application.orderingModule(dbConnectionString: String? = null, uuidGenerator: UUIDGenerator? = null) {
     koin {
         modules(orderingKoinModule(dbConnectionString, uuidGenerator))
     }
@@ -28,7 +28,7 @@ fun Application.orderingModule(dbConnectionString: String, uuidGenerator: UUIDGe
     }
 }
 
-fun orderingKoinModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?): Module = module {
+fun orderingKoinModule(dbConnectionString: String?, uuidGenerator: UUIDGenerator?): Module = module {
     includes(coreModule(dbConnectionString, uuidGenerator))
     scope(requestScope) {
         scopedOf(::MainOrderRepository) bind OrderRepository::class
