@@ -17,7 +17,7 @@ import io.mockk.every
 import java.util.UUID
 import kotlin.test.Test
 
-class AddOrderRouteTest {
+class AddOrderApiTest {
     @Test
     fun `should be possible to add an order`() {
         withApiTestApplication { _, uuidGenerator ->
