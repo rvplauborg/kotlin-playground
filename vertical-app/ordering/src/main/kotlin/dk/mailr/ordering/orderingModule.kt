@@ -7,6 +7,7 @@ import dk.mailr.ordering.dataAccess.MainOrderRepository
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.features.AddOrderCommandHandler
 import dk.mailr.ordering.features.DeleteOrderCommandHandler
+import dk.mailr.ordering.features.GetOrderQueryHandler
 import dk.mailr.ordering.features.GetOrdersQueryHandler
 import io.ktor.application.Application
 import io.ktor.routing.routing
@@ -32,11 +33,13 @@ fun orderingKoinModule(dbConnectionString: String) = module {
         scopedOf(::GetOrdersQueryHandler)
         scopedOf(::AddOrderCommandHandler)
         scopedOf(::DeleteOrderCommandHandler)
+        scopedOf(::GetOrderQueryHandler)
         scoped {
             OrderHandlers.of(
                 classToLazyProvider<GetOrdersQueryHandler>(),
                 classToLazyProvider<AddOrderCommandHandler>(),
                 classToLazyProvider<DeleteOrderCommandHandler>(),
+                classToLazyProvider<GetOrderQueryHandler>(),
             )
         }
     }
