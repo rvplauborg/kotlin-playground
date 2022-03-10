@@ -25,8 +25,8 @@ import org.koin.logger.slf4jLogger
 import kotlin.test.assertNotNull
 
 fun Application.apiTestModule(
-    mediator: Mediator,
-    uuidGenerator: UUIDGenerator,
+    mediatorOverride: Mediator,
+    uuidGeneratorOverride: UUIDGenerator,
 ) {
 
     install(ContentNegotiation) {
@@ -38,11 +38,11 @@ fun Application.apiTestModule(
     koin {
         slf4jLogger()
         modules(
-            mediatorModule(mediator),
+            mediatorModule(mediatorOverride),
         )
     }
-    auctionModule(uuidGenerator = uuidGenerator)
-    orderingModule(uuidGenerator = uuidGenerator)
+    auctionModule(uuidGenerator = uuidGeneratorOverride)
+    orderingModule(uuidGenerator = uuidGeneratorOverride)
 }
 
 fun <R> withApiTestApplication(test: TestApplicationEngine.(mediator: Mediator, uuidGenerator: UUIDGenerator) -> R): R {
