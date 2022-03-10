@@ -1,14 +1,9 @@
 package dk.mailr.webApp
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.jacksonMapperBuilder
-import com.fasterxml.jackson.module.kotlin.kotlinModule
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import dk.mailr.auctionInfrastructure.auctionModule
+import dk.mailr.buildingblocks.mediator.Mediator
+import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
@@ -31,15 +26,17 @@ import io.ktor.response.respond
 import io.ktor.response.respondRedirect
 import io.ktor.routing.get
 import io.ktor.routing.routing
-import org.koin.core.logger.Level
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
-import org.litote.kmongo.id.jackson.IdJacksonModule
 import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.module(dbConnectionString: String = environment.config.property("mongodb.uri").getString()) {
+fun Application.module(
+    dbConnectionString: String = environment.config.property("mongodb.uri").getString(),
+    mediator: Mediator? = null,
+    uuidGenerator: UUIDGenerator? = null,
+) {
     install(CallId) {
         // Tries to retrieve a callId from an ApplicationCall.
         retrieve { it.request.header(HttpHeaders.XRequestId) }
@@ -70,7 +67,6 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     }
     install(ContentNegotiation) {
         jackson {
-            this.
             registerModule(JavaTimeModule())
         }
     }
@@ -78,7 +74,7 @@ fun Application.module(dbConnectionString: String = environment.config.property(
     koin {
         slf4jLogger()
         modules(
-            mediatorModule,
+            mediatorModule(mediator),
         )
     }
 
@@ -88,8 +84,8 @@ fun Application.module(dbConnectionString: String = environment.config.property(
         }
     }
 
-    auctionModule(dbConnectionString)
-    orderingModule(dbConnectionString)
+    auctionModule(dbConnectionString, uuidGenerator)
+    orderingModule(dbConnectionString, uuidGenerator)
 
     val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
     val env = environment.config.propertyOrNull("ktor.environment")?.getString()

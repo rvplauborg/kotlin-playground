@@ -11,6 +11,7 @@ import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.domain.Order
 import dk.mailr.ordering.domain.OrderName
 import io.ktor.application.call
+import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -21,6 +22,7 @@ import org.koin.ktor.ext.inject
 import java.util.UUID
 
 data class AddOrderRequest(val orderName: String)
+data class AddOrderResponse(val orderId: String)
 
 fun Route.addOrderRoute() = post("/add-order") {
     val request = call.receive<AddOrderRequest>()
@@ -29,8 +31,8 @@ fun Route.addOrderRoute() = post("/add-order") {
     val uuidGenerator by call.inject<UUIDGenerator>()
     val id = uuidGenerator.generate()
     mediator.executeCommandAsync(AddOrderCommand.of(id, request.orderName))
-    call.respond(id)
     scope.close()
+    call.respond(HttpStatusCode.OK, AddOrderResponse(id.toString()))
 }
 
 data class AddOrderCommand private constructor(

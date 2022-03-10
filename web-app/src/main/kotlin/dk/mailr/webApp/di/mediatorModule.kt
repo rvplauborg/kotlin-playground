@@ -9,18 +9,20 @@ import dk.mailr.buildingblocks.mediator.MainMediator
 import dk.mailr.buildingblocks.mediator.ManualDependencyProvider
 import dk.mailr.buildingblocks.mediator.Mediator
 import dk.mailr.ordering.OrderHandlers
+import org.koin.core.module.dsl.scopedOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 // TODO: rplauborg 05/03/2022 If we could somehow modularize the mediator DI setup, so we could have API tests in each module,
 //  so they only spin up their part of the application, that would be great.
-val mediatorModule = module {
+fun mediatorModule(mediator: Mediator?) = module {
     scope(requestScope) {
         scoped {
             CommandBusBuilder(
                 ManualDependencyProvider(get<AuctionHandlers>().map + get<OrderHandlers>().map)
             ).build()
         }
-        scoped<Mediator> { MainMediator(get()) }
-        scoped<EventPublisher> { DomainEventPublisher(get()) }
+        scoped { mediator ?: MainMediator(get()) }
+        scopedOf(::DomainEventPublisher) bind EventPublisher::class
     }
 }

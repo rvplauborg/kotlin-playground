@@ -3,6 +3,7 @@ package dk.mailr.ordering
 import dk.mailr.buildingblocks.di.classToLazyProvider
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.di.requestScope
+import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import dk.mailr.ordering.dataAccess.MainOrderRepository
 import dk.mailr.ordering.dataAccess.OrderRepository
 import dk.mailr.ordering.features.AddOrderCommandHandler
@@ -11,14 +12,15 @@ import dk.mailr.ordering.features.GetOrderQueryHandler
 import dk.mailr.ordering.features.GetOrdersQueryHandler
 import io.ktor.application.Application
 import io.ktor.routing.routing
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.ktor.ext.koin
 
-fun Application.orderingModule(dbConnectionString: String) {
+fun Application.orderingModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) {
     koin {
-        modules(orderingKoinModule(dbConnectionString))
+        modules(orderingKoinModule(dbConnectionString, uuidGenerator))
     }
 
     routing {
@@ -26,8 +28,8 @@ fun Application.orderingModule(dbConnectionString: String) {
     }
 }
 
-fun orderingKoinModule(dbConnectionString: String) = module {
-    includes(coreModule(dbConnectionString))
+fun orderingKoinModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?): Module = module {
+    includes(coreModule(dbConnectionString, uuidGenerator))
     scope(requestScope) {
         scopedOf(::MainOrderRepository) bind OrderRepository::class
         scopedOf(::GetOrdersQueryHandler)

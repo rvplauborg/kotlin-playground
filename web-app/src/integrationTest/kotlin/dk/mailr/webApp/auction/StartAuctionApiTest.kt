@@ -1,10 +1,9 @@
 package dk.mailr.webApp.auction
 
+import dk.mailr.auctionApplication.StartAuctionCommand
 import dk.mailr.auctionApplication.StartAuctionRequest
 import dk.mailr.buildingblocks.json.jsonMapper
-import dk.mailr.webApp.TestContainerSetup
-import dk.mailr.webApp.apiTestModule
-import dk.mailr.webApp.module
+import dk.mailr.webApp.withApiTestApplication
 import io.kotest.matchers.shouldBe
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -12,20 +11,23 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.setBody
-import io.ktor.server.testing.withTestApplication
+import io.mockk.coVerify
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 class StartAuctionApiTest {
     @Test
-    fun `should be possible to create auction`() {
-        withTestApplication({ apiTestModule() }) {
-            val auctionId = createAuction()
-            with(handleRequest(HttpMethod.Post, "/auction/start-auction") {
+    fun `should be possible to start auction`() {
+        withApiTestApplication { mediator, _ ->
+            val auctionId = UUID.randomUUID()
+
+            val call = handleRequest(HttpMethod.Post, "/auction/start-auction") {
                 addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(jsonMapper.writeValueAsString(StartAuctionRequest(auctionId)))
-            }) {
-                response.status() shouldBe HttpStatusCode.OK
             }
+
+            call.response.status() shouldBe HttpStatusCode.OK
+            coVerify { mediator.executeCommandAsync(any<StartAuctionCommand>()) }
         }
     }
 }

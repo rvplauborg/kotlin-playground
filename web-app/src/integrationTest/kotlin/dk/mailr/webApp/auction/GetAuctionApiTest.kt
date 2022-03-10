@@ -1,26 +1,28 @@
 package dk.mailr.webApp.auction
 
-import dk.mailr.webApp.TestContainerSetup
-import dk.mailr.webApp.TestContainerSetup.DB_CONTAINER
-import dk.mailr.webApp.apiTestModule
-import dk.mailr.webApp.module
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
+import dk.mailr.auctionApplication.GetAuctionQuery
+import dk.mailr.auctionApplication.GetAuctionQueryResponse
+import dk.mailr.webApp.shouldHaveContentEqualTo
+import dk.mailr.webApp.shouldHaveStatus
+import dk.mailr.webApp.withApiTestApplication
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.withTestApplication
+import io.mockk.coEvery
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 class GetAuctionApiTest {
     @Test
     fun `should be possible to get auction`() {
-        withTestApplication({ apiTestModule() }) {
-            val auctionId = createAuction()
+        withApiTestApplication { mediator, _ ->
+            val auctionId = UUID.randomUUID()
+            val expectedResponse = GetAuctionQueryResponse(auctionId.toString(), "name")
+            coEvery { mediator.executeQueryAsync(any<GetAuctionQuery>()) } returns expectedResponse
 
             with(handleRequest(HttpMethod.Get, "/auction/get-auction/$auctionId")) {
-                response.status() shouldBe HttpStatusCode.OK
-                response.content.shouldNotBeNull()
+                response shouldHaveStatus HttpStatusCode.OK
+                response shouldHaveContentEqualTo expectedResponse
             }
         }
     }

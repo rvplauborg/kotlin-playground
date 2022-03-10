@@ -21,6 +21,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     val koinVersion: String by project
     implementation("io.insert-koin:koin-ktor:$koinVersion")

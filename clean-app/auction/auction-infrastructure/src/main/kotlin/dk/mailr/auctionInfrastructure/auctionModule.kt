@@ -8,6 +8,7 @@ import dk.mailr.auctionApplication.auctionRouting
 import dk.mailr.buildingblocks.di.classToLazyProvider
 import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.buildingblocks.di.requestScope
+import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import io.ktor.application.Application
 import io.ktor.routing.routing
 import org.koin.core.module.dsl.scopedOf
@@ -15,9 +16,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.ktor.ext.koin
 
-fun Application.auctionModule(dbConnectionString: String) {
+fun Application.auctionModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) {
     koin {
-        modules(auctionKoinModule(dbConnectionString))
+        modules(auctionKoinModule(dbConnectionString, uuidGenerator))
     }
 
     routing {
@@ -25,8 +26,8 @@ fun Application.auctionModule(dbConnectionString: String) {
     }
 }
 
-fun auctionKoinModule(dbConnectionString: String) = module {
-    includes(coreModule(dbConnectionString))
+fun auctionKoinModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?) = module {
+    includes(coreModule(dbConnectionString, uuidGenerator))
     scope(requestScope) {
         scopedOf(::MainAuctionRepository) bind AuctionRepository::class
         scopedOf(::CreateAuctionCommandAsyncHandler)

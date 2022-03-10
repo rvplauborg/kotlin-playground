@@ -6,20 +6,23 @@ import dk.mailr.buildingblocks.dataAccess.UnitOfWork
 import dk.mailr.buildingblocks.uuid.RandomUUIDGenerator
 import dk.mailr.buildingblocks.uuid.UUIDGenerator
 import kotlinx.coroutines.runBlocking
+import org.koin.core.module.Module
+import org.koin.core.module.dsl.scopedOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.koin.dsl.onClose
 import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
-fun coreModule(dbConnectionString: String) = module {
+fun coreModule(dbConnectionString: String, uuidGenerator: UUIDGenerator?): Module = module {
     single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
     single { get<CoroutineClient>().getDatabase("vertical-template-db") }
     scope(requestScope) {
         scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
             it?.close()
         }
-        scoped<UnitOfWork> { MongoUnitOfWork(get()) }
+        scopedOf(::MongoUnitOfWork) bind UnitOfWork::class
     }
-    single<UUIDGenerator> { RandomUUIDGenerator() }
+    single { uuidGenerator ?: RandomUUIDGenerator() }
 }
