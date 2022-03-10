@@ -11,6 +11,8 @@ dependencies {
     val koinVersion: String by project
     api("io.insert-koin:koin-core:$koinVersion")
 
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:1.13.1") // must be here for entity serialization to work
+
     val testContainersVersion: String by project
     testFixturesImplementation("org.testcontainers:mongodb:$testContainersVersion")
     testFixturesImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
