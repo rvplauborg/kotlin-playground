@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dk.mailr.ordering.features.AddOrderRequest
+import dk.mailr.ordering.features.AddOrderResponse
 import dk.mailr.ordering.features.GetOrderDTO
 import dk.mailr.ordering.features.GetOrderQueryResponseDTO
 import dk.mailr.ordering.features.GetOrdersQueryResponseDTO
@@ -24,7 +25,6 @@ import io.ktor.client.request.post
 import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 fun FrontPage(httpClient: HttpClient) {
@@ -57,10 +57,10 @@ private fun AddOrderComponent(
         )
         Button(onClick = {
             coroutineScope.launch {
-                val orderId: UUID = httpClient.post("http://localhost:8080/ordering/add-order") {
+                val response: AddOrderResponse = httpClient.post("http://localhost:8080/ordering/add-order") {
                     body = AddOrderRequest(orderName.value)
                 }
-                val order: GetOrderQueryResponseDTO = httpClient.get("http://localhost:8080/ordering/orders/$orderId")
+                val order: GetOrderQueryResponseDTO = httpClient.get("http://localhost:8080/ordering/orders/${response.orderId}")
                 orders.value += order.order
             }
         }) {
