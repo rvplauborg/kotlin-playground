@@ -15,7 +15,7 @@ import org.litote.kmongo.coroutine.CoroutineClient
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.reactivestreams.KMongo
 
-fun coreModule(dbConnectionString: String?, uuidGenerator: UUIDGenerator?): Module = module {
+fun coreModule(dbConnectionString: String? = null, uuidGenerator: UUIDGenerator? = null): Module = module {
     if (dbConnectionString != null) {
         single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
         single { get<CoroutineClient>().getDatabase("vertical-template-db") }

@@ -2,6 +2,7 @@ package dk.mailr.webApp
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import dk.mailr.auctionInfrastructure.auctionModule
+import dk.mailr.buildingblocks.di.coreModule
 import dk.mailr.ordering.orderingModule
 import dk.mailr.webApp.di.mediatorModule
 import io.ktor.application.Application
@@ -24,8 +25,10 @@ import io.ktor.response.respond
 import io.ktor.response.respondRedirect
 import io.ktor.routing.get
 import io.ktor.routing.routing
+import org.koin.ktor.ext.inject
 import org.koin.ktor.ext.koin
 import org.koin.logger.slf4jLogger
+import org.litote.kmongo.coroutine.CoroutineClient
 import java.util.concurrent.atomic.AtomicInteger
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -70,8 +73,24 @@ fun Application.module(
     koin {
         slf4jLogger()
         modules(
+            coreModule(dbConnectionString = dbConnectionString),
             mediatorModule(),
         )
+    }
+
+    install(Health) {
+        healthChecks {
+            val db: CoroutineClient by inject()
+            check("mongodb") {
+                @Suppress("TooGenericExceptionCaught", "SwallowedException")
+                try {
+                    db.listDatabaseNames().toList()
+                    true
+                } catch (e: Exception) {
+                    false
+                }
+            }
+        }
     }
 
     routing {
