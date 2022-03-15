@@ -36,48 +36,29 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(
     dbConnectionString: String = environment.config.property("mongodb.uri").getString(),
 ) {
-    install(CallId) {
-        // Tries to retrieve a callId from an ApplicationCall.
-        retrieve { it.request.header(HttpHeaders.XRequestId) }
+    installCallId()
+    installCallLogging()
+    installStatusPages()
+    installContentNegotiation()
+    installHealthEndpoints()
+    setupDependencyInjection(dbConnectionString)
 
-        // If can't retrieve a callId from the ApplicationCall, it will try the generate blocks coalescing until one of them is not null.
-        val counter = AtomicInteger(0)
-        generate { "generated-call-id-${counter.getAndIncrement()}" }
-
-        // Once a callId is generated, this optional function is called to verify if the retrieved or generated callId String is valid.
-        verify { it.isNotEmpty() }
-    }
-    install(CallLogging) {
-        callIdMdc()
-        format { call ->
-            val status = call.response.status()
-            val httpMethod = call.request.httpMethod.value
-            val userAgent = call.request.headers["User-Agent"]
-            "${call.request.uri}, Status: $status, HTTP method: $httpMethod, User agent: $userAgent, CallId: ${call.callId}"
-        }
-    }
-    install(StatusPages) {
-        exception<Throwable> {
-            call.respond(HttpStatusCode.InternalServerError, "Something went wrong, excuse us!")
-            throw it // otherwise, exception will be swallowed
-            // A better solution besides of course handling more specific exceptions, is to use HTML pages,
-            // see https://ktor.io/docs/status-pages.html#statusfile
-        }
-    }
-    install(ContentNegotiation) {
-        jackson {
-            registerModule(JavaTimeModule())
+    routing {
+        get("/") {
+            call.respondRedirect("/ordering/orders")
         }
     }
 
-    koin {
-        slf4jLogger()
-        modules(
-            coreModule(dbConnectionString = dbConnectionString),
-            mediatorModule(),
-        )
-    }
+    auctionModule(dbConnectionString = dbConnectionString)
+    orderingModule(dbConnectionString = dbConnectionString)
 
+    val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
+    val env = environment.config.propertyOrNull("ktor.environment")?.getString()
+    log.info("Running on port {} with environment {}", port, env)
+    log.info("MongoDB URI $dbConnectionString")
+}
+
+private fun Application.installHealthEndpoints() {
     install(Health) {
         healthChecks {
             val db: CoroutineClient by inject()
@@ -92,19 +73,59 @@ fun Application.module(
             }
         }
     }
+}
 
-    routing {
-        get("/") {
-            call.respondRedirect("/ordering/orders")
+private fun Application.setupDependencyInjection(dbConnectionString: String) {
+    koin {
+        slf4jLogger()
+        modules(
+            coreModule(dbConnectionString = dbConnectionString),
+            mediatorModule(),
+        )
+    }
+}
+
+private fun Application.installContentNegotiation() {
+    install(ContentNegotiation) {
+        jackson {
+            registerModule(JavaTimeModule())
         }
     }
+}
 
-    auctionModule(dbConnectionString = dbConnectionString)
-    orderingModule(dbConnectionString = dbConnectionString)
+private fun Application.installStatusPages() {
+    install(StatusPages) {
+        exception<Throwable> {
+            call.respond(HttpStatusCode.InternalServerError, "Something went wrong, excuse us!")
+            throw it // otherwise, exception will be swallowed
+            // A better solution besides of course handling more specific exceptions, is to use HTML pages,
+            // see https://ktor.io/docs/status-pages.html#statusfile
+        }
+    }
+}
 
-    val port = environment.config.propertyOrNull("ktor.deployment.port")?.getString()
-    val env = environment.config.propertyOrNull("ktor.environment")?.getString()
-    log.info("Running on port {} with environment {}", port, env)
+private fun Application.installCallLogging() {
+    install(CallLogging) {
+        callIdMdc()
+        format { call ->
+            val status = call.response.status()
+            val httpMethod = call.request.httpMethod.value
+            val userAgent = call.request.headers["User-Agent"]
+            "${call.request.uri}, Status: $status, HTTP method: $httpMethod, User agent: $userAgent, CallId: ${call.callId}"
+        }
+    }
+}
 
-    log.info("MongoDB URI $dbConnectionString")
+private fun Application.installCallId() {
+    install(CallId) {
+        // Tries to retrieve a callId from an ApplicationCall.
+        retrieve { it.request.header(HttpHeaders.XRequestId) }
+
+        // If can't retrieve a callId from the ApplicationCall, it will try the generate blocks coalescing until one of them is not null.
+        val counter = AtomicInteger(0)
+        generate { "generated-call-id-${counter.getAndIncrement()}" }
+
+        // Once a callId is generated, this optional function is called to verify if the retrieved or generated callId String is valid.
+        verify { it.isNotEmpty() }
+    }
 }
