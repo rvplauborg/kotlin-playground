@@ -9,7 +9,6 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 import org.litote.kmongo.coroutine.abortTransactionAndAwait
@@ -26,13 +25,6 @@ internal class MongoUnitOfWorkTest {
     }
 
     private val unitOfWork = MongoUnitOfWork(mockClientSession)
-
-    @Test
-    fun close() {
-        unitOfWork.close()
-
-        verify { mockClientSession.close() }
-    }
 
     @Test
     fun handleInTransactionAsync() = runTest {
