@@ -1,4 +1,4 @@
-package dk.mailr.webApp.ordering.features;
+package dk.mailr.webApp.ordering.features
 
 import dk.mailr.buildingblocks.fakes.fixture
 import dk.mailr.buildingblocks.json.jsonMapper

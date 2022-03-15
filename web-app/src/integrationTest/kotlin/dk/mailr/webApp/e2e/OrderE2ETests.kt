@@ -17,7 +17,7 @@ class OrderE2ETests : BaseE2ETest() {
             body = AddOrderRequest(fixture())
         }
 
-        val getOrderResponse = httpClient.get<GetOrderQueryResponseDTO>("http://localhost:8081/ordering/order/${addOrderResponse.orderId}")
+        val getOrderResponse = httpClient.get<GetOrderQueryResponseDTO>("http://localhost:8081/ordering/orders/${addOrderResponse.orderId}")
 
         getOrderResponse.order.id shouldBe addOrderResponse.orderId
     }

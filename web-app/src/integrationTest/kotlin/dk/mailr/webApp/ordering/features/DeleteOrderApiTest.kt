@@ -1,4 +1,4 @@
-package dk.mailr.webApp.ordering.features;
+package dk.mailr.webApp.ordering.features
 
 import dk.mailr.ordering.features.DeleteOrderCommand
 import dk.mailr.webApp.shouldHaveStatus
