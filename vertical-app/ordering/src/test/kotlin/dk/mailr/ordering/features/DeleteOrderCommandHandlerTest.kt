@@ -12,7 +12,6 @@ import io.mockk.coVerify
 import io.mockk.spyk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
-import java.util.UUID
 
 internal class DeleteOrderCommandHandlerTest {
     private val fakeOrderRepository = spyk(FakeOrderRepository())

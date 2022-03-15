@@ -17,7 +17,6 @@ internal class AddOrderCommandAsyncHandlerTest {
 
     @Test
     fun `should be possible to add order`() = runTest {
-
         handler.handleAsync(addOrderCommand)
 
         coVerify { fakeOrderRepository.save(any()) }
