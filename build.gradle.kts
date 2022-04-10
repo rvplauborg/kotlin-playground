@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.ben-manes.versions")
+    id(libs.plugins.com.github.benmanes.versions.get().pluginId)
     alias(libs.plugins.nl.littlerobots.version.catalog.update)
 }
 

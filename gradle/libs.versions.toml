@@ -1,21 +1,23 @@
 [versions]
 io-insert-koin = "3.2.0-beta-1"
-io-kotest = "5.1.0"
-io-ktor = "1.6.7"
+io-kotest = "5.2.3"
+io-ktor = "1.6.8"
 org-jetbrains-kotlin = "1.6.10"
 org-testcontainers = "1.16.3"
 org-valiktor = "0.12.0"
 com-benmanes-versions = "0.42.0"
-detekt = "1.19.0"
+detekt = "1.20.0-RC2"
 kover = "0.5.0"
+jackson = "2.13.2"
+compose = "1.1.0"
 
 [libraries]
 ch-qos-logback-logback-classic = "ch.qos.logback:logback-classic:1.2.11"
 com-appmattus-fixture = "com.appmattus.fixture:fixture:1.2.0"
-com-fasterxml-jackson-datatype-jackson-datatype-jsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1"
-com-fasterxml-jackson-module-jackson-module-kotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1"
+com-fasterxml-jackson-datatype-jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson" }
+com-fasterxml-jackson-module-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 com-github-benmanes-versions-plugin = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "com-benmanes-versions" }
-com-trendyol-kediatr-core = "com.trendyol:kediatr-core:1.0.17"
+com-trendyol-kediatr-core = "com.trendyol:kediatr-core:1.0.18"
 io-gitlab-arturbosch-detekt-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 io-gitlab-arturbosch-detekt-plugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 io-insert-koin-koin-core = { module = "io.insert-koin:koin-core", version.ref = "io-insert-koin" }
@@ -34,8 +36,8 @@ io-ktor-ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = 
 io-ktor-ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "io-ktor" }
 io-ktor-ktor-server-tests = { module = "io.ktor:ktor-server-tests", version.ref = "io-ktor" }
 io-mockk = "io.mockk:mockk:1.12.3"
-org-jetbrains-compose-compiler = "org.jetbrains.compose.compiler:compiler:1.1.0"
-org-jetbrains-compose-desktop-desktop-jvm-windows-x64 = "org.jetbrains.compose.desktop:desktop-jvm-windows-x64:1.1.0"
+org-jetbrains-compose-compiler = "org.jetbrains.compose.compiler:compiler:compose"
+org-jetbrains-compose-desktop-desktop-jvm-windows-x64 = "org.jetbrains.compose.desktop:desktop-jvm-windows-x64:compose"
 org-jetbrains-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "org-jetbrains-kotlin" }
 org-jetbrains-kotlin-kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "org-jetbrains-kotlin" }
 org-jetbrains-kotlin-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "org-jetbrains-kotlin" }
@@ -44,7 +46,7 @@ org-jetbrains-kotlin-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-std
 org-jetbrains-kotlin-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "org-jetbrains-kotlin" }
 org-jetbrains-kotlin-kover-plugin = { module = "org.jetbrains.kotlinx:kover", version.ref = "kover" }
 org-junit-jupiter-junit-jupiter = "org.junit.jupiter:junit-jupiter:5.8.2"
-org-litote-kmongo-kmongo-coroutine = "org.litote.kmongo:kmongo-coroutine:4.5.0"
+org-litote-kmongo-kmongo-coroutine = "org.litote.kmongo:kmongo-coroutine:4.5.1"
 org-testcontainers-junit-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "org-testcontainers" }
 org-testcontainers-mongodb = { module = "org.testcontainers:mongodb", version.ref = "org-testcontainers" }
 org-valiktor-valiktor-core = { module = "org.valiktor:valiktor-core", version.ref = "org-valiktor" }
@@ -53,4 +55,4 @@ org-valiktor-valiktor-test = { module = "org.valiktor:valiktor-test", version.re
 [plugins]
 com-github-benmanes-versions = "com.github.ben-manes.versions:0.42.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
-org-jetbrains-compose = "org.jetbrains.compose:1.1.0"
+org-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
