@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 plugins {
     id("vertical.template.kotlin-application-conventions")
 }
@@ -16,25 +18,22 @@ dependencies {
     implementation(projects.cleanApp.auction.auctionApplication)
     implementation(projects.cleanApp.auction.auctionInfrastructure)
     implementation(projects.verticalApp.ordering)
-    val ktorVersion: String by project
-    val logbackVersion: String by project
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    val koinVersion: String by project
-    implementation("io.insert-koin:koin-ktor:$koinVersion")
-    implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+    implementation(libs.ch.qos.logback.logback.classic)
+    implementation(libs.io.ktor.ktor.jackson)
+    implementation(libs.com.fasterxml.jackson.datatype.jackson.datatype.jsr310)
+    implementation(libs.com.fasterxml.jackson.module.jackson.module.kotlin)
+    implementation(libs.io.ktor.ktor.server.netty)
+    implementation(libs.io.insert.koin.koin.ktor)
+    implementation(libs.io.insert.koin.koin.logger.slf4j)
 
-    testImplementation("io.insert-koin:koin-test-junit5:$koinVersion") {
+    testImplementation(libs.io.insert.koin.koin.test.junit5) {
         exclude("org.jetbrains.kotlin", "kotlin-test-junit")
     }
     testImplementation(testFixtures(projects.buildingBlocks))
 
-    integrationTestImplementation("io.ktor:ktor-server-tests:$ktorVersion")
-    integrationTestImplementation("org.testcontainers:mongodb:1.16.2")
-    integrationTestImplementation("io.ktor:ktor-client-core:$ktorVersion")
-    integrationTestImplementation("io.ktor:ktor-client-cio:$ktorVersion")
-    integrationTestImplementation("io.ktor:ktor-client-jackson:$ktorVersion")
+    integrationTestImplementation(libs.io.ktor.ktor.server.tests)
+    integrationTestImplementation(libs.org.testcontainers.mongodb)
+    integrationTestImplementation(libs.io.ktor.ktor.client.core)
+    integrationTestImplementation(libs.io.ktor.ktor.client.cio)
+    integrationTestImplementation(libs.io.ktor.ktor.client.jackson)
 }

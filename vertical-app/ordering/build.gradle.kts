@@ -4,11 +4,9 @@ plugins {
 
 dependencies {
     implementation(projects.buildingBlocks)
-    val ktorVersion: String by project
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    val koinVersion: String by project
-    implementation("io.insert-koin:koin-ktor:$koinVersion")
-    implementation("io.ktor:ktor-html-builder:$ktorVersion")
+    implementation(libs.io.ktor.ktor.server.core)
+    implementation(libs.io.insert.koin.koin.ktor)
+    implementation(libs.io.ktor.ktor.html.builder)
 
     testImplementation(testFixtures(projects.buildingBlocks))
     testImplementation(testFixtures(projects.verticalApp.ordering))

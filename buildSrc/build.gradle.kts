@@ -8,9 +8,8 @@ repositories {
 }
 
 dependencies {
-    // TODO would be great to deduplicate the versions across buildSrc and the actual projects & convention plugins
-    val kotlinVersion = "1.6.10"
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-    implementation("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
-    implementation("org.jetbrains.kotlinx:kover:0.5.0")
+    implementation(libs.com.github.benmanes.versions.plugin)
+    implementation(libs.org.jetbrains.kotlin.gradle.plugin)
+    implementation(libs.io.gitlab.arturbosch.detekt.plugin)
+    implementation(libs.org.jetbrains.kotlin.kover.plugin)
 }

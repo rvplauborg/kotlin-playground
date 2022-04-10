@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt")
     id("org.jetbrains.kotlinx.kover")
+    id("com.github.ben-manes.versions")
     `java-test-fixtures`
 }
 
@@ -74,27 +75,23 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+// Unfortunately cannot use version catalog out of the box like in buildSrc/build.gradle.kts. See https://github.com/gradle/gradle/issues/15383
+val libs: VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
 dependencies {
-    val kotlinVersion: String by project
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion")) // use same version of kotlin library versions
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${libs.findVersion("org-jetbrains-kotlin").get().requiredVersion}"))
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    val valiktorVersion: String by project
-    implementation("org.valiktor:valiktor-core:$valiktorVersion")
+    implementation("org.valiktor:valiktor-core:${libs.findVersion("org-valiktor").get().requiredVersion}")
 
     testImplementation(kotlin("test")) // will automatically include JUnit 5 based on our 'useJUnitPlatform' configuration for tasks.test
-    val kotestVersion: String by project
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:${libs.findVersion("io-kotest").get().requiredVersion}")
+    testImplementation("io.kotest:kotest-assertions-core:${libs.findVersion("io-kotest").get().requiredVersion}")
 
-    testImplementation("org.valiktor:valiktor-test:$valiktorVersion")
-    val fixtureVersion: String by project
-    testImplementation("com.appmattus.fixture:fixture:$fixtureVersion")
-    val mockkVersion: String by project
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    val junitVersion: String by project
-    testImplementation("org.junit.jupiter:junit-jupiter:$junitVersion")
+    testImplementation("org.valiktor:valiktor-test:${libs.findVersion("org-valiktor").get().requiredVersion}")
+    testImplementation(libs.findLibrary("com-appmattus-fixture").get())
+    testImplementation(libs.findLibrary("io-mockk").get())
+    testImplementation(libs.findLibrary("org-junit-jupiter-junit-jupiter").get())
 
-    val detektVersion: String by project
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektVersion") // ktlint wrapper for detekt
+    detektPlugins(libs.findLibrary("io-gitlab-arturbosch-detekt-detekt-formatting").get()) // ktlint wrapper for detekt
 }

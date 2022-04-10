@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("org.jetbrains.compose") version "1.1.0"
+    alias(libs.plugins.org.jetbrains.compose)
 }
 
 repositories {
@@ -25,14 +25,12 @@ tasks {
 dependencies {
     implementation(compose.desktop.currentOs)
 
-    val logbackVersion: String by project
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    val ktorVersion: String by project
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation(libs.ch.qos.logback.logback.classic)
+    implementation(libs.io.ktor.ktor.client.core)
+    implementation(libs.io.ktor.ktor.client.cio)
+    implementation(libs.io.ktor.ktor.client.jackson)
+    implementation(libs.io.ktor.ktor.client.logging)
+    implementation(libs.com.fasterxml.jackson.datatype.jackson.datatype.jsr310)
 
     implementation(projects.verticalApp.ordering)
 }
