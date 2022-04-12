@@ -18,7 +18,7 @@ import org.litote.kmongo.reactivestreams.KMongo
 fun coreModule(dbConnectionString: String? = null, uuidGenerator: UUIDGenerator? = null): Module = module {
     if (dbConnectionString != null) {
         single { KMongo.createClient(ConnectionString(dbConnectionString)).coroutine }
-        single { get<CoroutineClient>().getDatabase("vertical-template-db") }
+        single { get<CoroutineClient>().getDatabase("kotlin-playground-db") }
         scope(requestScope) {
             scoped { runBlocking { get<CoroutineClient>().startSession() } } onClose {
                 it?.close()

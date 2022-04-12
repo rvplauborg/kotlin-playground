@@ -3,7 +3,7 @@
  * in the user manual at https://docs.gradle.org/7.2/userguide/multi_project_builds.html
  */
 
-rootProject.name = "vertical-template"
+rootProject.name = "kotlin-playground"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 

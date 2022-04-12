@@ -1,7 +1,7 @@
 group = "dk.mailr"
 
 plugins {
-    id("vertical.template.kotlin-common-conventions")
+    id("kotlin.playground.kotlin-common-conventions")
 }
 
 // Unfortunately cannot use version catalog out of the box like in buildSrc/build.gradle.kts. See https://github.com/gradle/gradle/issues/15383

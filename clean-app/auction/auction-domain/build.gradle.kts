@@ -1,5 +1,5 @@
 plugins {
-    id("vertical.template.kotlin-common-conventions")
+    id("kotlin.playground.kotlin-common-conventions")
 }
 
 dependencies {

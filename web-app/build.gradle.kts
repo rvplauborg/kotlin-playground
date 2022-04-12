@@ -1,7 +1,7 @@
 import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
-    id("vertical.template.kotlin-application-conventions")
+    id("kotlin.playground.kotlin-application-conventions")
 }
 
 version = "0.0.1"

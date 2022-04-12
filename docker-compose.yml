@@ -1,11 +1,11 @@
 # Docker-compose for local dev environment
 services:
-  mongo-vertical-template:
+  mongo-kotlin-playground:
     image: mongo:4.4.8
     restart: always
     command: [ "--replSet", "my-replica-set", "--bind_ip_all", "--port", "30002" ]
     volumes:
-      - ./data/mongo-vertical-template:/data/db
+      - ./data/mongo-kotlin-playground:/data/db
     ports:
       - 30002:30002
     healthcheck:
