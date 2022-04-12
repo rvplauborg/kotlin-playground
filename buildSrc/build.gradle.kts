@@ -11,5 +11,4 @@ dependencies {
     implementation(libs.com.github.benmanes.versions.plugin)
     implementation(libs.org.jetbrains.kotlin.gradle.plugin)
     implementation(libs.io.gitlab.arturbosch.detekt.plugin)
-    implementation(libs.org.jetbrains.kotlin.kover.plugin)
 }

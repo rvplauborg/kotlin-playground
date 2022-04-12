@@ -56,3 +56,4 @@ org-valiktor-valiktor-test = { module = "org.valiktor:valiktor-test", version.re
 com-github-benmanes-versions = "com.github.ben-manes.versions:0.42.0"
 nl-littlerobots-version-catalog-update = "nl.littlerobots.version-catalog-update:0.3.1"
 org-jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+org-jetbrains-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

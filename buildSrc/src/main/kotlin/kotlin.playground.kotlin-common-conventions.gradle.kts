@@ -5,7 +5,6 @@ group = "dk.mailr"
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt")
-    id("org.jetbrains.kotlinx.kover")
     id("com.github.ben-manes.versions")
     `java-test-fixtures`
 }
@@ -64,9 +63,6 @@ tasks {
             "-opt-in=kotlin.RequiresOptIn",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         )
-    }
-    koverCollectReports {
-        outputDir.set(rootProject.layout.buildDirectory.dir("my-reports"))
     }
 }
 
