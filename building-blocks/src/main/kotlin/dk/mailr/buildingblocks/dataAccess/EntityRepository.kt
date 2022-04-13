@@ -41,7 +41,7 @@ abstract class MongoEntityRepository<TEntity : DomainEntity<TEntity>>(
     }
 
     override suspend fun save(entity: TEntity): TEntity {
-        mongoCollection.save(entity) // TODO should use client session, see https://github.com/Litote/kmongo/issues/327
+        mongoCollection.save(clientSession, entity)
         eventsPublisher.enqueueEventsFrom(entity)
         return entity
     }
