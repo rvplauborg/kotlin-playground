@@ -17,7 +17,7 @@ repositories {
 kotlin {
     jvmToolchain {
         // See https://kotlinlang.org/docs/whatsnew1530.html#support-for-java-toolchains
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of("16"))
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of("11"))
     }
 }
 
@@ -58,7 +58,7 @@ tasks {
     }
     withType<KotlinCompile> {
         kotlinOptions.allWarningsAsErrors = true
-        kotlinOptions.jvmTarget = JavaLanguageVersion.of("16").toString()
+        kotlinOptions.jvmTarget = JavaLanguageVersion.of("11").toString()
         kotlinOptions.freeCompilerArgs += listOf(
             "-opt-in=kotlin.RequiresOptIn",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
