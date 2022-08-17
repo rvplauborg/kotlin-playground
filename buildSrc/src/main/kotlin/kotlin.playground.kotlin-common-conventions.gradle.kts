@@ -1,7 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "dk.mailr"
-
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt")

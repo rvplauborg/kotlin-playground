@@ -1,5 +1,3 @@
-group = "dk.mailr"
-
 plugins {
     id("kotlin.playground.kotlin-common-conventions")
 }
