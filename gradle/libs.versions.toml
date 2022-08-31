@@ -1,3 +1,4 @@
+// TODO: rplauborg 31-08-2022 Should fix names of versions/libraries to be much simpler, as each '-' will result in a new group nesting
 [versions]
 io-insert-koin = "3.2.0-beta-1"
 io-kotest = "5.2.3"
